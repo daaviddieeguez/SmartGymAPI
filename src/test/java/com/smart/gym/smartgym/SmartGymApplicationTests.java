@@ -1,10 +1,10 @@
-package com.smart.gym.smartgymapi;
+package com.smart.gym.smartgym;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SmartGymApiApplicationTests {
+class SmartGymApplicationTests {
 
     @Test
     void contextLoads() {
