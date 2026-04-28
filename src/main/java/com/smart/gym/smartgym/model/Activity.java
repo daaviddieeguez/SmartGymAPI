@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "activity")
@@ -33,7 +33,7 @@ public class Activity {
     @Column(nullable = false)
     private int duration;
 
-    @NotBlank(message = "The calories is required")
+    @Min(value = 0, message = "Calories cannot be negative")
     @Column(nullable = false)
     private int calories;
 
@@ -48,5 +48,5 @@ public class Activity {
     @ElementCollection
     @CollectionTable(name = "activity_votes", joinColumns = @JoinColumn(name = "activity_id"))
     @Column(name = "vote")
-    private ArrayList<Integer> votes;
+    private List<Integer> votes;
 }
