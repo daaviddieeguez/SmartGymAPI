@@ -17,6 +17,6 @@ public class GymService {
     }
 
     public List<Member> getMembers() {
-        return memberRepository.findAll();
+        return memberRepository.findAllByActivities();
     }
 }
