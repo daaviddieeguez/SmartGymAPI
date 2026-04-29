@@ -13,9 +13,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findMemberByDni(String dni);
 
-    List<Member> findMemberByName(String name);
-
-    List<Member> findMemberByIsActive(boolean isActive);
+    List<Member> findMemberByActive(boolean active);
 
     void deleteMemberByDni(String dni);
 
