@@ -1,6 +1,7 @@
 package com.smart.gym.smartgym.controller;
 
-import com.smart.gym.smartgym.model.Member;
+import com.smart.gym.smartgym.dto.MemberRequestDTO;
+import com.smart.gym.smartgym.dto.MemberResponseDTO;
 import com.smart.gym.smartgym.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,28 +19,28 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public List<Member> getAllMembers() {
+    public List<MemberResponseDTO> getAllMembers() {
         return memberService.getMembers();
     }
 
     @GetMapping("/{dni}")
-    public Member getMemberByDni(@PathVariable String dni) {
+    public MemberResponseDTO getMemberByDni(@PathVariable String dni) {
         return memberService.getMemberByDni(dni);
     }
 
     @GetMapping("/active")
-    public List<Member> getActiveMembers() {
+    public List<MemberResponseDTO> getActiveMembers() {
         return memberService.getActiveMembers(true);
     }
 
     @GetMapping("/inactive")
-    public List<Member> getInactiveMembers() {
+    public List<MemberResponseDTO> getInactiveMembers() {
         return memberService.getActiveMembers(false);
     }
 
     @PostMapping
-    public ResponseEntity<Member> createMember(@Valid @RequestBody Member member) {
-        Member savedMember = memberService.saveMember(member);
+    public ResponseEntity<MemberResponseDTO> createMember(@Valid @RequestBody MemberRequestDTO requestDTO) {
+        MemberResponseDTO savedMember = memberService.saveMember(requestDTO);
         return new ResponseEntity<>(savedMember, HttpStatus.CREATED);
     }
 
