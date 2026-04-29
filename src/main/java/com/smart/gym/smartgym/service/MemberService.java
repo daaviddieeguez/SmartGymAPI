@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class GymService {
+public class MemberService {
     private final MemberRepository memberRepository;
 
     public Member saveMember(Member member){

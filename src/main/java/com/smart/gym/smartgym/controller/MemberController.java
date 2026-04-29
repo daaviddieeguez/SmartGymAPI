@@ -1,7 +1,7 @@
 package com.smart.gym.smartgym.controller;
 
 import com.smart.gym.smartgym.model.Member;
-import com.smart.gym.smartgym.service.GymService;
+import com.smart.gym.smartgym.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,37 +15,37 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final GymService gymService;
+    private final MemberService memberService;
 
     @GetMapping
     public List<Member> getAllMembers() {
-        return gymService.getMembers();
+        return memberService.getMembers();
     }
 
     @GetMapping("/{dni}")
     public Member getMemberByDni(@PathVariable String dni) {
-        return gymService.getMemberByDni(dni);
+        return memberService.getMemberByDni(dni);
     }
 
     @GetMapping("/active")
     public List<Member> getActiveMembers() {
-        return gymService.getActiveMembers(true);
+        return memberService.getActiveMembers(true);
     }
 
     @GetMapping("/inactive")
     public List<Member> getInactiveMembers() {
-        return gymService.getActiveMembers(false);
+        return memberService.getActiveMembers(false);
     }
 
     @PostMapping
     public ResponseEntity<?> createMember(@Valid @RequestBody Member member) {
-        Member savedMember = gymService.saveMember(member);
+        Member savedMember = memberService.saveMember(member);
         return new ResponseEntity<>(savedMember, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{dni}")
     public ResponseEntity<Void> deleteMember(@PathVariable String dni) {
-        gymService.deleteMember(dni);
+        memberService.deleteMember(dni);
         return ResponseEntity.noContent().build();
     }
 }
