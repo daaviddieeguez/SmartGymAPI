@@ -39,9 +39,21 @@ public class MonitorController {
         return new ResponseEntity<>(saveMonitor, HttpStatus.CREATED);
     }
 
+    @PostMapping("/{dni}/activities/{activityId}")
+    public ResponseEntity<MonitorResponseDTO> insertMonitorActivity(@PathVariable String dni, @PathVariable Long activityId) {
+        MonitorResponseDTO savedActivity = monitorService.insertMonitorActivity(dni, activityId);
+        return new ResponseEntity<>(savedActivity, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{dni}")
     public ResponseEntity<Void> deleteMonitor(@PathVariable String dni) {
         monitorService.deleteMonitor(dni);
         return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{dni}/activities/{activityId}")
+    public ResponseEntity<MonitorResponseDTO> removeMonitorActivity(@PathVariable String dni, @PathVariable Long activityId) {
+        MonitorResponseDTO updatedMonitor = monitorService.removeMonitorActivity(dni, activityId);
+        return new ResponseEntity<>(updatedMonitor, HttpStatus.OK);
     }
 }
