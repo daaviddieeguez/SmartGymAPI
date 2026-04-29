@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
-    List<Activity> findActivityByIsPremium(boolean isPremium);
+    List<Activity> findActivityByPremium(boolean premium);
     
     void deleteActivityById(Long id);
 }

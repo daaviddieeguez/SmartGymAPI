@@ -22,7 +22,7 @@ public class GymService {
     }
 
     public List<Member> getActiveMembers(boolean isActive) {
-        return memberRepository.findMemberByIsActive(isActive);
+        return memberRepository.findMemberByActive(isActive);
     }
 
     @Transactional

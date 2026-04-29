@@ -24,8 +24,8 @@ public class Member extends Person {
     @Column(nullable = false)
     private LocalDate lastAccessDate;
 
-    @Column(nullable = false)
-    private boolean isActive;
+    @Column(name = "is_active", nullable = false)
+    private boolean active;
 
     @Column(nullable = false)
     private double fee;
@@ -38,6 +38,6 @@ public class Member extends Person {
     )
     protected Set<Activity> activities = new HashSet<>();
 
-    @Column(nullable = false)
-    private boolean isPremium;
+    @Column(name = "is_premium", nullable = false)
+    private boolean premium;
 }

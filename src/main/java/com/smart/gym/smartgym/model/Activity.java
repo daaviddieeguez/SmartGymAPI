@@ -42,8 +42,8 @@ public class Activity {
     @Column(nullable = false)
     private Specialty category;
 
-    @Column(nullable = false)
-    private boolean isPremium;
+    @Column(name = "is_premium", nullable = false)
+    private boolean premium;
 
     @ElementCollection
     @CollectionTable(name = "activity_votes", joinColumns = @JoinColumn(name = "activity_id"))
