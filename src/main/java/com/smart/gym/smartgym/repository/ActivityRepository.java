@@ -9,6 +9,4 @@ import java.util.List;
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
     List<Activity> findActivityByPremium(boolean premium);
-    
-    void deleteActivityById(Long id);
 }
