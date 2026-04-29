@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "activity")
@@ -40,4 +42,7 @@ public class Activity {
     @CollectionTable(name = "activity_votes", joinColumns = @JoinColumn(name = "activity_id"))
     @Column(name = "vote")
     private List<Integer> votes;
+
+    @ManyToMany(mappedBy = "activities")
+    private Set<Monitor> monitors = new HashSet<>();
 }

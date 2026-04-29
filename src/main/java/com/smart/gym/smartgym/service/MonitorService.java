@@ -3,7 +3,9 @@ package com.smart.gym.smartgym.service;
 import com.smart.gym.smartgym.dto.MonitorRequestDTO;
 import com.smart.gym.smartgym.dto.MonitorResponseDTO;
 import com.smart.gym.smartgym.mapper.MonitorMapper;
+import com.smart.gym.smartgym.model.Activity;
 import com.smart.gym.smartgym.model.Monitor;
+import com.smart.gym.smartgym.repository.ActivityRepository;
 import com.smart.gym.smartgym.repository.MonitorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.List;
 public class MonitorService {
 
     private final MonitorRepository monitorRepository;
+    private final ActivityRepository activityRepository;
     private final MonitorMapper monitorMapper;
 
     public List<MonitorResponseDTO> getAllMonitors() {
@@ -47,6 +50,30 @@ public class MonitorService {
         newMonitor.setSalary(1200.0);
 
         Monitor savedMonitor = monitorRepository.save(newMonitor);
+
+        return monitorMapper.toDTO(savedMonitor);
+    }
+
+    public MonitorResponseDTO insertMonitorActivity(String dni, Long idActivity) {
+        Monitor monitor = monitorRepository.findMonitorByDni(dni).orElseThrow(() -> new IllegalArgumentException("No monitor found with DNI: " + dni));
+
+        Activity activity = activityRepository.findById(idActivity).orElseThrow(() -> new IllegalArgumentException("No activity found with ID: " + idActivity));
+
+        monitor.getActivities().add(activity);
+
+        Monitor savedMonitor = monitorRepository.save(monitor);
+
+        return monitorMapper.toDTO(savedMonitor);
+    }
+
+    public MonitorResponseDTO removeMonitorActivity(String dni, Long idActivity) {
+        Monitor monitor = monitorRepository.findMonitorByDni(dni).orElseThrow(() -> new IllegalArgumentException("No monitor found with DNI: " + dni));
+
+        Activity activity = activityRepository.findById(idActivity).orElseThrow(() -> new IllegalArgumentException("No activity found with ID: " + idActivity));
+
+        monitor.getActivities().remove(activity);
+
+        Monitor savedMonitor = monitorRepository.save(monitor);
 
         return monitorMapper.toDTO(savedMonitor);
     }
