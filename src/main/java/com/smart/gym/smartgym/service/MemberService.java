@@ -3,7 +3,9 @@ package com.smart.gym.smartgym.service;
 import com.smart.gym.smartgym.dto.MemberRequestDTO;
 import com.smart.gym.smartgym.dto.MemberResponseDTO;
 import com.smart.gym.smartgym.mapper.MemberMapper;
+import com.smart.gym.smartgym.model.Activity;
 import com.smart.gym.smartgym.model.Member;
+import com.smart.gym.smartgym.repository.ActivityRepository;
 import com.smart.gym.smartgym.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final ActivityRepository activityRepository;
     private final MemberMapper memberMapper;
 
     public MemberResponseDTO saveMember(MemberRequestDTO requestDTO){
@@ -53,5 +56,33 @@ public class MemberService {
         Member member = memberRepository.findMemberByDni(dni).orElseThrow(() -> new IllegalArgumentException("No member found with DNI: " + dni));
 
         return memberMapper.toDTO(member);
+    }
+
+    public MemberResponseDTO insertMemberActivity(String dni, Long idActivity) {
+        Member member = memberRepository.findMemberByDni(dni).orElseThrow(() -> new IllegalArgumentException("No member found with DNI: " + dni));
+
+        Activity activity = activityRepository.findById(idActivity).orElseThrow(() -> new IllegalArgumentException("No activity found with ID: " + idActivity));
+
+        if(activity.isPremium() && !member.isPremium()){
+            throw new IllegalArgumentException("Standard members cannot enroll in premium activities. Please upgrade your membership.");
+        }
+
+        member.getActivities().add(activity);
+
+        Member savedMember = memberRepository.save(member);
+
+        return memberMapper.toDTO(savedMember);
+    }
+
+    public MemberResponseDTO removeMemberActivity(String dni, Long idActivity) {
+        Member member = memberRepository.findMemberByDni(dni).orElseThrow(() -> new IllegalArgumentException("No member found with DNI: " + dni));
+
+        Activity activity = activityRepository.findById(idActivity).orElseThrow(() -> new IllegalArgumentException("No activity found with ID: " + idActivity));
+
+        member.getActivities().remove(activity);
+
+        Member savedMember = memberRepository.save(member);
+
+        return memberMapper.toDTO(savedMember);
     }
 }

@@ -44,9 +44,21 @@ public class MemberController {
         return new ResponseEntity<>(savedMember, HttpStatus.CREATED);
     }
 
+    @PostMapping("/{dni}/activities/{activityId}")
+    public ResponseEntity<MemberResponseDTO> insertMemberActivity(@PathVariable String dni, @PathVariable Long activityId) {
+        MemberResponseDTO savedActivity = memberService.insertMemberActivity(dni, activityId);
+        return new ResponseEntity<>(savedActivity, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{dni}")
     public ResponseEntity<Void> deleteMember(@PathVariable String dni) {
         memberService.deleteMember(dni);
         return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{dni}/activities/{activityId}")
+    public ResponseEntity<MemberResponseDTO> removeMemberActivity(@PathVariable String dni, @PathVariable Long activityId) {
+        MemberResponseDTO updatedMember = memberService.removeMemberActivity(dni, activityId);
+        return new ResponseEntity<>(updatedMember, HttpStatus.OK);
     }
 }
