@@ -5,4 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MonitorRequestDTO extends PersonRequestDTO {}
+public class MonitorResponseDTO extends PersonResponseDTO {
+    private double salary;
+}

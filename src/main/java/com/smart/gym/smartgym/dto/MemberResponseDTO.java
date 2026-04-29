@@ -1,12 +1,11 @@
 package com.smart.gym.smartgym.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class MemberResponseDTO {
-    private String dni;
-    private String name;
-    private String locality;
+@Getter
+@Setter
+public class MemberResponseDTO extends PersonResponseDTO {
     private boolean active;
     private boolean premium;
 }

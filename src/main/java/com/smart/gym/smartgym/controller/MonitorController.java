@@ -1,6 +1,7 @@
 package com.smart.gym.smartgym.controller;
 
-import com.smart.gym.smartgym.model.Monitor;
+import com.smart.gym.smartgym.dto.MonitorRequestDTO;
+import com.smart.gym.smartgym.dto.MonitorResponseDTO;
 import com.smart.gym.smartgym.service.MonitorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,23 +19,23 @@ public class MonitorController {
     private final MonitorService monitorService;
 
     @GetMapping
-    public List<Monitor> getAllMonitors() {
+    public List<MonitorResponseDTO> getAllMonitors() {
         return monitorService.getAllMonitors();
     }
 
     @GetMapping("/{dni}")
-    public Monitor getMonitorByDni(@PathVariable String dni) {
+    public MonitorResponseDTO getMonitorByDni(@PathVariable String dni) {
         return monitorService.getMonitorByDni(dni);
     }
 
     @GetMapping("/name/{name}")
-    public List<Monitor> getMonitorByName(@PathVariable String name) {
+    public List<MonitorResponseDTO> getMonitorByName(@PathVariable String name) {
         return monitorService.getMonitorsByName(name);
     }
 
     @PostMapping
-    public ResponseEntity<Monitor> createMonitor(@Valid @RequestBody Monitor monitor) {
-        Monitor saveMonitor = monitorService.saveMonitor(monitor);
+    public ResponseEntity<MonitorResponseDTO> createMonitor(@Valid @RequestBody MonitorRequestDTO requestDTO) {
+        MonitorResponseDTO saveMonitor = monitorService.saveMonitor(requestDTO);
         return new ResponseEntity<>(saveMonitor, HttpStatus.CREATED);
     }
 
