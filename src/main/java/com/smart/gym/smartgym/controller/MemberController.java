@@ -38,7 +38,7 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createMember(@Valid @RequestBody Member member) {
+    public ResponseEntity<Member> createMember(@Valid @RequestBody Member member) {
         Member savedMember = memberService.saveMember(member);
         return new ResponseEntity<>(savedMember, HttpStatus.CREATED);
     }

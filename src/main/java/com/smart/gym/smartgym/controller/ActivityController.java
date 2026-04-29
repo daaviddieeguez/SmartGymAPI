@@ -33,7 +33,7 @@ public class ActivityController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createActivity(@Valid @RequestBody Activity activity) {
+    public ResponseEntity<Activity> createActivity(@Valid @RequestBody Activity activity) {
         Activity savedActivity = activityService.saveActivity(activity);
         return new ResponseEntity<>(savedActivity, HttpStatus.CREATED);
     }
