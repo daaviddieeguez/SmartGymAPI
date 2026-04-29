@@ -1,6 +1,7 @@
 package com.smart.gym.smartgym.controller;
 
-import com.smart.gym.smartgym.model.Activity;
+import com.smart.gym.smartgym.dto.ActivityRequestDTO;
+import com.smart.gym.smartgym.dto.ActivityResponseDTO;
 import com.smart.gym.smartgym.service.ActivityService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,23 +19,23 @@ public class ActivityController {
     private final ActivityService activityService;
 
     @GetMapping
-    public List<Activity> getAllActivities() {
+    public List<ActivityResponseDTO> getAllActivities() {
         return activityService.getAllActivities();
     }
 
     @GetMapping("/premium")
-    public List<Activity> getPremiumActivities() {
+    public List<ActivityResponseDTO> getPremiumActivities() {
         return activityService.getActivitiesByPremium(true);
     }
 
     @GetMapping("/normal")
-    public List<Activity> getNormalActivities() {
+    public List<ActivityResponseDTO> getNormalActivities() {
         return activityService.getActivitiesByPremium(false);
     }
 
     @PostMapping
-    public ResponseEntity<Activity> createActivity(@Valid @RequestBody Activity activity) {
-        Activity savedActivity = activityService.saveActivity(activity);
+    public ResponseEntity<ActivityResponseDTO> createActivity(@Valid @RequestBody ActivityRequestDTO activity) {
+        ActivityResponseDTO savedActivity = activityService.saveActivity(activity);
         return new ResponseEntity<>(savedActivity, HttpStatus.CREATED);
     }
 
