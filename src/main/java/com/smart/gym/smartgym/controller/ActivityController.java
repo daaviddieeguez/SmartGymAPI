@@ -5,6 +5,7 @@ import com.smart.gym.smartgym.dto.ActivityResponseDTO;
 import com.smart.gym.smartgym.service.ActivityService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,12 @@ public class ActivityController {
     private final ActivityService activityService;
 
     @GetMapping
-    public List<ActivityResponseDTO> getAllActivities() {
-        return activityService.getAllActivities();
+    public ResponseEntity<Page<ActivityResponseDTO>> getAllActivities(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<ActivityResponseDTO> activities = activityService.getAllActivities(page, size);
+        return new ResponseEntity<>(activities, HttpStatus.OK);
     }
 
     @GetMapping("/premium")

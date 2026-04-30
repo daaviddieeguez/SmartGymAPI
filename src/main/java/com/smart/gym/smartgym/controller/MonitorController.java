@@ -1,15 +1,18 @@
 package com.smart.gym.smartgym.controller;
 
+import com.smart.gym.smartgym.dto.ActivityResponseDTO;
 import com.smart.gym.smartgym.dto.MonitorRequestDTO;
 import com.smart.gym.smartgym.dto.MonitorResponseDTO;
 import com.smart.gym.smartgym.service.MonitorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/monitors")
@@ -19,13 +22,23 @@ public class MonitorController {
     private final MonitorService monitorService;
 
     @GetMapping
-    public List<MonitorResponseDTO> getAllMonitors() {
-        return monitorService.getAllMonitors();
+    public ResponseEntity<Page<MonitorResponseDTO>> getAllMonitors(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<MonitorResponseDTO> monitors = monitorService.getAllMonitors(page, size);
+        return new ResponseEntity<>(monitors, HttpStatus.OK);
     }
 
     @GetMapping("/{dni}")
     public MonitorResponseDTO getMonitorByDni(@PathVariable String dni) {
         return monitorService.getMonitorByDni(dni);
+    }
+
+    @GetMapping("/{dni}/activities")
+    public ResponseEntity<Set<ActivityResponseDTO>> getMonitorActivities(@PathVariable String dni) {
+        Set<ActivityResponseDTO> activities = monitorService.getMonitorActivities(dni);
+        return new ResponseEntity<>(activities, HttpStatus.OK);
     }
 
     @GetMapping("/name/{name}")
