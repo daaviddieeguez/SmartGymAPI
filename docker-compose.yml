@@ -1,0 +1,13 @@
+services:
+  postgres:
+    image: postgres:18
+    volumes:
+      - postgresql-data:/var/lib/postgresql
+    environment:
+      POSTGRES_PASSWORD: UPAQi4M24FwfYEUqbY0m
+      POSTGRES_DB: smart_gym_db
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgresql-data:
