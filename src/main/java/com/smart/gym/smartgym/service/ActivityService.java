@@ -6,6 +6,9 @@ import com.smart.gym.smartgym.mapper.ActivityMapper;
 import com.smart.gym.smartgym.model.Activity;
 import com.smart.gym.smartgym.repository.ActivityRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +22,12 @@ public class ActivityService {
     private final ActivityRepository activityRepository;
     private final ActivityMapper activityMapper;
 
-    public List<ActivityResponseDTO> getAllActivities() {
-        List<Activity> activities = activityRepository.findAll();
+    public Page<ActivityResponseDTO> getAllActivities(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
 
-        return activityMapper.toDTOList(activities);
+        Page<Activity> activityPage = activityRepository.findAll(pageable);
+
+        return activityPage.map(activityMapper::toDTO);
     }
 
     public List<ActivityResponseDTO> getActivitiesByPremium(boolean isPremium) {

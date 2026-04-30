@@ -1,17 +1,24 @@
 package com.smart.gym.smartgym.service;
 
+import com.smart.gym.smartgym.dto.ActivityResponseDTO;
 import com.smart.gym.smartgym.dto.MonitorRequestDTO;
 import com.smart.gym.smartgym.dto.MonitorResponseDTO;
+import com.smart.gym.smartgym.mapper.ActivityMapper;
 import com.smart.gym.smartgym.mapper.MonitorMapper;
 import com.smart.gym.smartgym.model.Activity;
 import com.smart.gym.smartgym.model.Monitor;
 import com.smart.gym.smartgym.repository.ActivityRepository;
 import com.smart.gym.smartgym.repository.MonitorRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,11 +27,21 @@ public class MonitorService {
     private final MonitorRepository monitorRepository;
     private final ActivityRepository activityRepository;
     private final MonitorMapper monitorMapper;
+    private final ActivityMapper activityMapper;
 
-    public List<MonitorResponseDTO> getAllMonitors() {
-        List<Monitor> monitors = monitorRepository.findAll();
+    public Page<MonitorResponseDTO> getAllMonitors(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
 
-        return monitorMapper.toDTOList(monitors);
+        Page<Monitor> monitorPage = monitorRepository.findAll(pageable);
+
+        return monitorPage.map(monitorMapper::toDTO);
+    }
+
+    public Set<ActivityResponseDTO> getMonitorActivities(String dni) {
+        Monitor monitor = monitorRepository.findMonitorByDni(dni)
+                .orElseThrow(() -> new IllegalArgumentException("No monitor found with DNI: " + dni));
+
+        return monitor.getActivities().stream().map(activityMapper::toDTO).collect(Collectors.toSet());
     }
 
     public MonitorResponseDTO getMonitorByDni(String dni) {
