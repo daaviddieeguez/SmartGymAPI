@@ -1,5 +1,6 @@
 package com.smart.gym.smartgym.dto;
 
+import com.smart.gym.smartgym.validation.ValidSpanishDni;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -15,6 +16,7 @@ public abstract class PersonRequestDTO {
 
     @NotBlank(message = "The DNI is required")
     @Pattern(regexp = "^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$", message = "The DNI format is incorrect")
+    @ValidSpanishDni
     private String dni;
 
     @NotBlank(message = "The name is required")
