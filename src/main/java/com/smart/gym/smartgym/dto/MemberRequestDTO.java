@@ -5,5 +5,4 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MemberRequestDTO extends PersonRequestDTO {
-}
+public class MemberRequestDTO extends PersonRequestDTO {}

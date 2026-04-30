@@ -39,6 +39,12 @@ public class ActivityController {
         return new ResponseEntity<>(savedActivity, HttpStatus.CREATED);
     }
 
+    @PostMapping("/{id}/votes/{score}")
+    public ResponseEntity<ActivityResponseDTO> voteForActivity(@PathVariable Long id, @PathVariable int score) {
+        ActivityResponseDTO updatedActivity = activityService.addVote(id, score);
+        return new ResponseEntity<>(updatedActivity, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteActivity(@PathVariable Long id) {
         activityService.deleteActivity(id);
