@@ -4,15 +4,25 @@ import com.smart.gym.smartgym.dto.ActivityRequestDTO;
 import com.smart.gym.smartgym.dto.ActivityResponseDTO;
 import com.smart.gym.smartgym.model.Activity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ActivityMapper {
+    @Mapping(target = "averageScore", source = "votes")
     ActivityResponseDTO toDTO(Activity activity);
 
     List<ActivityResponseDTO> toDTOList(List<Activity> activities);
 
     Activity toEntity(ActivityRequestDTO requestDTO);
+
+    default double calculateAverage(List<Integer> votes) {
+        if (votes == null || votes.isEmpty()) {
+            return 0.0;
+        }
+
+        return votes.stream().mapToInt(Integer::intValue).average().orElse(0.0);
+    }
 }

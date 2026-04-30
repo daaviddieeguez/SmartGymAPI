@@ -10,4 +10,5 @@ public class ActivityResponseDTO {
     private int calories;
     private Specialty category;
     private boolean premium;
+    private double averageScore;
 }
