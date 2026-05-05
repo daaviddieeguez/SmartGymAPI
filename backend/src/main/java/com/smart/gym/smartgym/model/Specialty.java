@@ -2,22 +2,22 @@ package com.smart.gym.smartgym.model;
 
 public enum Specialty {
     FITNESS("fitness"),
-    PISCINA("piscina"),
-    CICLISMO("ciclismo"),
+    POOL("pool"),
+    CYCLING("cycling"),
     HIIT("hiit"),
     CORE("core"),
-    BAILE("baile"),
+    DANCE("dance"),
     BODYCARE("bodycore"),
     CARDIO("cardio");
 
-    final String nombre;
+    final String name;
 
-    Specialty(String nombre){
-        this.nombre = nombre;
+    Specialty(String name){
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return this.nombre;
+        return this.name;
     }
 }
