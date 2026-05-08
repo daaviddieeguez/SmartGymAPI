@@ -8,20 +8,11 @@ export interface Activity {
 }
 
 export interface Member {
-  id: number;
   name: string;
   dni: string;
-  birthdate: string;
-  address: string;
   locality: string;
-  province: string;
-  postCode: string;
-  phoneNumber: string;
-  isPremium: boolean;
-  isActive: boolean;
-  fee: number;
-  registrationDate: string;
-  lastAccessDate: string;
+  premium: boolean;
+  active: boolean;
 }
 
 export interface Monitor {
@@ -35,4 +26,12 @@ export interface Monitor {
   postCode: string;
   phoneNumber: string;
   salary: number;
+}
+
+export interface PageResponse<T> {
+    content: T[];
+    totalPages: number;
+    totalElements: number;
+    size: number;
+    number: number;
 }
