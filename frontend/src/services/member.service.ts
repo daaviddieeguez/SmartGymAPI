@@ -6,8 +6,8 @@ const ENDPOINT = `${API_BASE_URL}/members`;
 export const MemberService = {
   
   // GET: Fetch all members
-  getAll: async (): Promise<PageResponse<Member>> => {
-    const response = await fetch(ENDPOINT);
+  getAll: async (page: number = 0): Promise<PageResponse<Member>> => {
+    const response = await fetch(`${ENDPOINT}?page=${page}&size=9`);
     if (!response.ok) throw new Error('Failed to fetch members');
     return response.json();
   },
