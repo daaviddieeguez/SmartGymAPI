@@ -13,9 +13,27 @@ export const MemberService = {
   },
 
   // GET: Fetch a single member by ID
-  getById: async (dni: string): Promise<Member> => {
-    const response = await fetch(`${ENDPOINT}/${dni}`);
-    if (!response.ok) throw new Error(`Failed to fetch member with dni ${dni}`);
+  getById: async (id: number): Promise<Member> => {
+    const response = await fetch(`${ENDPOINT}/${id}`);
+    if (!response.ok) throw new Error(`Failed to fetch member with ID ${id}`);
+    return response.json();
+  },
+
+  // PUT: Send the updated data to the server
+  update: async (id: number, member: PersonRequest) => {
+    const response = await fetch(`${ENDPOINT}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(member),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw errorData; 
+    }
+    
     return response.json();
   },
 

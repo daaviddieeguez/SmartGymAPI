@@ -3,6 +3,7 @@ package com.smart.gym.smartgym.service;
 import com.smart.gym.smartgym.dto.ActivityResponseDTO;
 import com.smart.gym.smartgym.dto.MemberRequestDTO;
 import com.smart.gym.smartgym.dto.MemberResponseDTO;
+import com.smart.gym.smartgym.dto.PersonRequestDTO;
 import com.smart.gym.smartgym.mapper.ActivityMapper;
 import com.smart.gym.smartgym.mapper.MemberMapper;
 import com.smart.gym.smartgym.model.Activity;
@@ -58,6 +59,11 @@ public class MemberService {
         return memberPage.map(memberMapper::toDTO);
     }
 
+    public MemberResponseDTO getMemberById(long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No member found with ID: " + id));
+        return memberMapper.toDTO(member);
+    }
+
     public List<MemberResponseDTO> getActiveMembers(boolean isActive) {
         List<Member> members = memberRepository.findMemberByActive(isActive);
 
@@ -65,8 +71,8 @@ public class MemberService {
     }
 
     @Transactional
-    public void deleteMember(String dni) {
-        memberRepository.deleteMemberByDni(dni);
+    public void deleteMember(Long id) {
+        memberRepository.deleteById(id);
     }
 
 
@@ -76,8 +82,8 @@ public class MemberService {
         return memberMapper.toDTO(member);
     }
 
-    public MemberResponseDTO insertMemberActivity(String dni, Long idActivity) {
-        Member member = memberRepository.findMemberByDni(dni).orElseThrow(() -> new IllegalArgumentException("No member found with DNI: " + dni));
+    public MemberResponseDTO insertMemberActivity(Long id, Long idActivity) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No member found with ID: " + id));
 
         Activity activity = activityRepository.findById(idActivity).orElseThrow(() -> new IllegalArgumentException("No activity found with ID: " + idActivity));
 
@@ -92,8 +98,8 @@ public class MemberService {
         return memberMapper.toDTO(savedMember);
     }
 
-    public MemberResponseDTO removeMemberActivity(String dni, Long idActivity) {
-        Member member = memberRepository.findMemberByDni(dni).orElseThrow(() -> new IllegalArgumentException("No member found with DNI: " + dni));
+    public MemberResponseDTO removeMemberActivity(Long id, Long idActivity) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No member found with ID: " + id));
 
         Activity activity = activityRepository.findById(idActivity).orElseThrow(() -> new IllegalArgumentException("No activity found with ID: " + idActivity));
 
@@ -102,5 +108,23 @@ public class MemberService {
         Member savedMember = memberRepository.save(member);
 
         return memberMapper.toDTO(savedMember);
+    }
+
+    @Transactional
+    public MemberResponseDTO updateMember(Long id, PersonRequestDTO request) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
+
+        member.setName(request.getName());
+        member.setBirthdate(request.getBirthdate());
+        member.setAddress(request.getAddress());
+        member.setLocality(request.getLocality());
+        member.setProvince(request.getProvince());
+        member.setPostCode(request.getPostCode());
+        member.setPhoneNumber(request.getPhoneNumber());
+
+        Member updatedMember = memberRepository.save(member);
+
+        return memberMapper.toDTO(updatedMember);
     }
 }

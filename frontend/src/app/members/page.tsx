@@ -1,3 +1,4 @@
+import { DeleteButton } from "@/src/components/ui/DeleteButton";
 import { MemberService } from "@/src/services/member.service";
 import Link from "next/link";
 
@@ -9,8 +10,6 @@ export default async function MembersPage(props: {
 
   const pageData = await MemberService.getAll(currentPage);
   const members = pageData.content;
-
-  console.log("First member data:", members[0]);
 
   return (
     <div className="p-8 md:w-3xl xl:w-7xl mx-auto">
@@ -46,7 +45,12 @@ export default async function MembersPage(props: {
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <td className="p-4 font-medium text-gray-800">
-                      {member.name}
+                      <Link
+                        href={`/members/${member.id}`}
+                        className="hover:text-blue-600 hover:underline transition-colors"
+                      >
+                        {member.name}
+                      </Link>
                     </td>
                     <td className="p-4 text-gray-600">{member.dni}</td>
                     <td className="p-4 text-gray-600">{member.locality}</td>
@@ -73,9 +77,13 @@ export default async function MembersPage(props: {
                       </div>
                     </td>
                     <td className="p-4 text-right">
-                      <button className="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                      <Link
+                        href={`/members/${member.id}/edit`}
+                        className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors"
+                      >
                         Edit
-                      </button>
+                      </Link>
+                      <DeleteButton id={member.id} />
                     </td>
                   </tr>
                 ))}
