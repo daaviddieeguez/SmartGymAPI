@@ -28,6 +28,12 @@ public class ActivityController {
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ActivityResponseDTO> getActivityById(@PathVariable Long id) {
+        ActivityResponseDTO activity = activityService.getActivityById(id);
+        return ResponseEntity.ok(activity);
+    }
+
     @GetMapping("/premium")
     public List<ActivityResponseDTO> getPremiumActivities() {
         return activityService.getActivitiesByPremium(true);
@@ -48,6 +54,15 @@ public class ActivityController {
     public ResponseEntity<ActivityResponseDTO> voteForActivity(@PathVariable Long id, @PathVariable int score) {
         ActivityResponseDTO updatedActivity = activityService.addVote(id, score);
         return new ResponseEntity<>(updatedActivity, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ActivityResponseDTO> updateActivity(
+            @PathVariable Long id,
+            @Valid @RequestBody ActivityRequestDTO request) {
+
+        ActivityResponseDTO updatedActivity = activityService.updateActivity(id, request);
+        return ResponseEntity.ok(updatedActivity);
     }
 
     @DeleteMapping("/{id}")

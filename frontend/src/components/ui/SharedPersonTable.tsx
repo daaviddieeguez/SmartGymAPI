@@ -24,14 +24,12 @@ export const SharedPersonTable = ({ items, baseRoute }: SharedPersonTableProps) 
           <th className="p-4 font-semibold">Name</th>
           <th className="p-4 font-semibold">DNI</th>
           <th className="p-4 font-semibold">Location</th>
-          {/* We only show the Status column for members */}
           {baseRoute === "members" && <th className="p-4 font-semibold">Status</th>}
           <th className="p-4 font-semibold text-right">Actions</th>
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-100">
         {items.map((person) => {
-          // Cast the person to a Member to check premium/active status if we are on the members route
           const isMember = baseRoute === "members";
           const memberData = person as Member;
 
