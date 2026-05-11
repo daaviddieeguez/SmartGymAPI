@@ -29,7 +29,7 @@ export const MemberService = {
 
     if (!response.ok) {
         const errorData = await response.json();
-        throw new errorData;
+        throw errorData;
     }
     
     return response.json();
