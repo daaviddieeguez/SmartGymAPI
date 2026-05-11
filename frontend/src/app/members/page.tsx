@@ -15,10 +15,15 @@ export default async function MembersPage(props: {
   return (
     <div className="p-8 md:w-3xl xl:w-7xl mx-auto">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Members Dashboard</h1>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+          Members Dashboard
+        </h1>
+        <Link
+          href="/members/new"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+        >
           + New Member
-        </button>
+        </Link>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -100,8 +105,6 @@ export default async function MembersPage(props: {
                     Previous
                   </button>
                 )}
-
-                {/* Next Button */}
                 {pageData.number < pageData.totalPages - 1 ? (
                   <Link
                     href={`/members?page=${pageData.number + 1}`}

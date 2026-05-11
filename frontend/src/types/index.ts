@@ -35,3 +35,14 @@ export interface PageResponse<T> {
     size: number;
     number: number;
 }
+
+export interface PersonRequest {
+  dni: string;
+  name: string;
+  birthdate: string;
+  address: string;
+  locality: string;
+  province: string;
+  postCode: string;
+  phoneNumber: string;
+}
