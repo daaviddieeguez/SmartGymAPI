@@ -1,11 +1,10 @@
 package com.smart.gym.smartgym.service;
 
-import com.smart.gym.smartgym.dto.ActivityResponseDTO;
-import com.smart.gym.smartgym.dto.MonitorRequestDTO;
-import com.smart.gym.smartgym.dto.MonitorResponseDTO;
+import com.smart.gym.smartgym.dto.*;
 import com.smart.gym.smartgym.mapper.ActivityMapper;
 import com.smart.gym.smartgym.mapper.MonitorMapper;
 import com.smart.gym.smartgym.model.Activity;
+import com.smart.gym.smartgym.model.Member;
 import com.smart.gym.smartgym.model.Monitor;
 import com.smart.gym.smartgym.repository.ActivityRepository;
 import com.smart.gym.smartgym.repository.MonitorRepository;
@@ -37,11 +36,16 @@ public class MonitorService {
         return monitorPage.map(monitorMapper::toDTO);
     }
 
-    public Set<ActivityResponseDTO> getMonitorActivities(String dni) {
-        Monitor monitor = monitorRepository.findMonitorByDni(dni)
-                .orElseThrow(() -> new IllegalArgumentException("No monitor found with DNI: " + dni));
+    public Set<ActivityResponseDTO> getMonitorActivities(Long id) {
+        Monitor monitor = monitorRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No monitor found with ID: " + id));
 
         return monitor.getActivities().stream().map(activityMapper::toDTO).collect(Collectors.toSet());
+    }
+
+    public MonitorResponseDTO getMonitorById(long id) {
+        Monitor monitor = monitorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No monitor found with ID: " + id));
+        return monitorMapper.toDTO(monitor);
     }
 
     public MonitorResponseDTO getMonitorByDni(String dni) {
@@ -57,8 +61,8 @@ public class MonitorService {
     }
 
     @Transactional
-    public void deleteMonitor(String dni) {
-        monitorRepository.deleteMonitorByDni(dni);
+    public void deleteMonitor(Long id) {
+        monitorRepository.deleteById(id);
     }
 
     public MonitorResponseDTO saveMonitor(MonitorRequestDTO monitor) {
@@ -71,8 +75,8 @@ public class MonitorService {
         return monitorMapper.toDTO(savedMonitor);
     }
 
-    public MonitorResponseDTO insertMonitorActivity(String dni, Long idActivity) {
-        Monitor monitor = monitorRepository.findMonitorByDni(dni).orElseThrow(() -> new IllegalArgumentException("No monitor found with DNI: " + dni));
+    public MonitorResponseDTO insertMonitorActivity(Long id, Long idActivity) {
+        Monitor monitor = monitorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No monitor found with ID: " + id));
 
         Activity activity = activityRepository.findById(idActivity).orElseThrow(() -> new IllegalArgumentException("No activity found with ID: " + idActivity));
 
@@ -83,8 +87,8 @@ public class MonitorService {
         return monitorMapper.toDTO(savedMonitor);
     }
 
-    public MonitorResponseDTO removeMonitorActivity(String dni, Long idActivity) {
-        Monitor monitor = monitorRepository.findMonitorByDni(dni).orElseThrow(() -> new IllegalArgumentException("No monitor found with DNI: " + dni));
+    public MonitorResponseDTO removeMonitorActivity(Long id, Long idActivity) {
+        Monitor monitor = monitorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No monitor found with ID: " + id));
 
         Activity activity = activityRepository.findById(idActivity).orElseThrow(() -> new IllegalArgumentException("No activity found with ID: " + idActivity));
 
@@ -93,5 +97,24 @@ public class MonitorService {
         Monitor savedMonitor = monitorRepository.save(monitor);
 
         return monitorMapper.toDTO(savedMonitor);
+    }
+
+    @Transactional
+    public MonitorResponseDTO updateMonitor(Long id, MonitorRequestDTO request) {
+        Monitor monitor = monitorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Monitor not found with id: " + id));
+
+        monitor.setName(request.getName());
+        monitor.setBirthdate(request.getBirthdate());
+        monitor.setAddress(request.getAddress());
+        monitor.setLocality(request.getLocality());
+        monitor.setProvince(request.getProvince());
+        monitor.setPostCode(request.getPostCode());
+        monitor.setPhoneNumber(request.getPhoneNumber());
+        monitor.setSalary(request.getSalary());
+
+        Monitor updatedMonitor = monitorRepository.save(monitor);
+
+        return monitorMapper.toDTO(updatedMonitor);
     }
 }

@@ -40,9 +40,9 @@ public class MemberController {
         return memberService.getMemberByDni(dni);
     }
 
-    @GetMapping("/{dni}/activities")
-    public ResponseEntity<Set<ActivityResponseDTO>> getMemberActivities(@PathVariable String dni) {
-        Set<ActivityResponseDTO> activities = memberService.getMemberActivities(dni);
+    @GetMapping("/{id}/activities")
+    public ResponseEntity<Set<ActivityResponseDTO>> getMemberActivities(@PathVariable Long id) {
+        Set<ActivityResponseDTO> activities = memberService.getMemberActivities(id);
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
 
