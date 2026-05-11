@@ -36,11 +36,11 @@ class MemberServiceTest {
     @Test
     void shouldThrowExceptionWhenMemberIsNotPremiumAndRegisterInPremiumActivity() {
         Long activityId = 1L;
-        String memberDni = "12345678Z";
+        Long memberId = 1L;
 
         Member fakeMember = new Member();
-        fakeMember.setId(1L);
-        fakeMember.setDni(memberDni);
+        fakeMember.setId(memberId);
+        fakeMember.setDni("12345678Z");
         fakeMember.setPremium(false);
         fakeMember.setActivities(new HashSet<>());
 
@@ -48,10 +48,10 @@ class MemberServiceTest {
         fakeActivity.setId(activityId);
         fakeActivity.setPremium(true);
 
-        when(memberRepository.findMemberByDni(memberDni)).thenReturn(Optional.of(fakeMember));
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(fakeMember));
         when(activityRepository.findById(activityId)).thenReturn(Optional.of(fakeActivity));
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> memberService.insertMemberActivity(fakeMember.getDni(), fakeActivity.getId()));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> memberService.insertMemberActivity(fakeMember.getId(), fakeActivity.getId()));
 
         assertEquals("Standard members cannot enroll in premium activities. Please upgrade your membership.", exception.getMessage());
     }
@@ -59,11 +59,11 @@ class MemberServiceTest {
     @Test
     void shouldRegisterPremiumMemberInPremiumActivity() {
         Long activityId = 1L;
-        String memberDni = "12345678Z";
+        Long memberId = 1L;
 
         Member fakeMember = new Member();
-        fakeMember.setId(1L);
-        fakeMember.setDni(memberDni);
+        fakeMember.setId(memberId);
+        fakeMember.setDni("12345678Z");
         fakeMember.setPremium(true);
         fakeMember.setActivities(new HashSet<>());
 
@@ -73,12 +73,12 @@ class MemberServiceTest {
 
         MemberResponseDTO fakeDTO = new MemberResponseDTO();
 
-        when(memberRepository.findMemberByDni(memberDni)).thenReturn(Optional.of(fakeMember));
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(fakeMember));
         when(activityRepository.findById(activityId)).thenReturn(Optional.of(fakeActivity));
         when(memberRepository.save(any(Member.class))).thenReturn(fakeMember);
         when(memberMapper.toDTO(fakeMember)).thenReturn(fakeDTO);
 
-        MemberResponseDTO result = memberService.insertMemberActivity(memberDni, activityId);
+        MemberResponseDTO result = memberService.insertMemberActivity(memberId, activityId);
 
         assertNotNull(result);
         assertEquals(fakeDTO, result);
@@ -98,14 +98,14 @@ class MemberServiceTest {
 
     @Test
     void shouldThrowExceptionWhenMemberDoesNotExist() {
-        String nonExistentDni = "00000000A";
+        Long nonExistentId = 1L;
         Long activityId = 1L;
 
-        when(memberRepository.findMemberByDni(nonExistentDni)).thenReturn(Optional.empty());
+        when(memberRepository.findById(nonExistentId)).thenReturn(Optional.empty());
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> memberService.insertMemberActivity(nonExistentDni, activityId));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> memberService.insertMemberActivity(nonExistentId, activityId));
 
-        assertEquals("No member found with DNI: " + nonExistentDni, exception.getMessage());
+        assertEquals("No member found with ID: " + nonExistentId, exception.getMessage());
 
         verify(activityRepository, never()).findById(anyLong());
     }

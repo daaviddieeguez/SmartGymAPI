@@ -71,8 +71,8 @@ public class MemberService {
     }
 
     @Transactional
-    public void deleteMember(String dni) {
-        memberRepository.deleteMemberByDni(dni);
+    public void deleteMember(Long id) {
+        memberRepository.deleteById(id);
     }
 
 
@@ -82,8 +82,8 @@ public class MemberService {
         return memberMapper.toDTO(member);
     }
 
-    public MemberResponseDTO insertMemberActivity(String dni, Long idActivity) {
-        Member member = memberRepository.findMemberByDni(dni).orElseThrow(() -> new IllegalArgumentException("No member found with DNI: " + dni));
+    public MemberResponseDTO insertMemberActivity(Long id, Long idActivity) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No member found with ID: " + id));
 
         Activity activity = activityRepository.findById(idActivity).orElseThrow(() -> new IllegalArgumentException("No activity found with ID: " + idActivity));
 
@@ -98,8 +98,8 @@ public class MemberService {
         return memberMapper.toDTO(savedMember);
     }
 
-    public MemberResponseDTO removeMemberActivity(String dni, Long idActivity) {
-        Member member = memberRepository.findMemberByDni(dni).orElseThrow(() -> new IllegalArgumentException("No member found with DNI: " + dni));
+    public MemberResponseDTO removeMemberActivity(Long id, Long idActivity) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No member found with ID: " + id));
 
         Activity activity = activityRepository.findById(idActivity).orElseThrow(() -> new IllegalArgumentException("No activity found with ID: " + idActivity));
 

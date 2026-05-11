@@ -1,3 +1,4 @@
+import { DeleteButton } from "@/src/components/ui/DeleteButton";
 import { MemberService } from "@/src/services/member.service";
 import Link from "next/link";
 
@@ -44,7 +45,12 @@ export default async function MembersPage(props: {
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <td className="p-4 font-medium text-gray-800">
-                      {member.name}
+                      <Link
+                        href={`/members/${member.id}`}
+                        className="hover:text-blue-600 hover:underline transition-colors"
+                      >
+                        {member.name}
+                      </Link>
                     </td>
                     <td className="p-4 text-gray-600">{member.dni}</td>
                     <td className="p-4 text-gray-600">{member.locality}</td>
@@ -77,6 +83,7 @@ export default async function MembersPage(props: {
                       >
                         Edit
                       </Link>
+                      <DeleteButton id={member.id} />
                     </td>
                   </tr>
                 ))}
