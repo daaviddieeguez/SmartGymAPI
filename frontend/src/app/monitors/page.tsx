@@ -12,9 +12,9 @@ export default async function MonitorsPage(props: {
   const monitors = pageData.content;
 
   return (
-    <div className="p-8 md:w-3xl xl:w-7xl mx-auto">
+    <div className="p-4 w-full min-h-screen bg-gray-50/50">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">
+        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
           Monitors Dashboard
         </h1>
         <Link
@@ -25,7 +25,7 @@ export default async function MonitorsPage(props: {
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
         <SharedPersonTable items={monitors} baseRoute="monitors" />
         <div className="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50">
           <span className="text-sm text-gray-500">
