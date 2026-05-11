@@ -45,4 +45,7 @@ export interface PersonRequest {
   province: string;
   postCode: string;
   phoneNumber: string;
+  salary?: number;
+  premium?: boolean;
+  active?: boolean;
 }

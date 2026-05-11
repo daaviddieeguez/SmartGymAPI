@@ -111,7 +111,7 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResponseDTO updateMember(Long id, PersonRequestDTO request) {
+    public MemberResponseDTO updateMember(Long id, MemberRequestDTO request) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
 
@@ -122,6 +122,8 @@ public class MemberService {
         member.setProvince(request.getProvince());
         member.setPostCode(request.getPostCode());
         member.setPhoneNumber(request.getPhoneNumber());
+        member.setPremium(request.getPremium());
+        member.setActive(request.getActive());
 
         Member updatedMember = memberRepository.save(member);
 

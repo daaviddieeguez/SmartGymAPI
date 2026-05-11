@@ -1,4 +1,4 @@
-import { Monitor, PageResponse } from "../types";
+import { Monitor, PageResponse, PersonRequest } from "../types";
 import { API_BASE_URL, DEFAULT_HEADERS } from "./api";
 
 const ENDPOINT = `${API_BASE_URL}/monitors`;
@@ -18,6 +18,24 @@ export const MonitorService = {
     return response.json();
   },
 
+  // PUT: Send the updated data to the server
+  update: async (id: number, monitor: PersonRequest) => {
+    const response = await fetch(`${ENDPOINT}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(monitor),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw errorData;
+    }
+
+    return response.json();
+  },
+
   // POST: Create a new monitor
   create: async (monitor: Omit<Monitor, "id">): Promise<Monitor> => {
     const response = await fetch(ENDPOINT, {
@@ -25,7 +43,12 @@ export const MonitorService = {
       headers: DEFAULT_HEADERS,
       body: JSON.stringify(monitor),
     });
-    if (!response.ok) throw new Error("Failed to create monitor");
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw errorData; 
+    }
+
     return response.json();
   },
 

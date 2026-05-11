@@ -1,8 +1,6 @@
 package com.smart.gym.smartgym.controller;
 
-import com.smart.gym.smartgym.dto.ActivityResponseDTO;
-import com.smart.gym.smartgym.dto.MonitorRequestDTO;
-import com.smart.gym.smartgym.dto.MonitorResponseDTO;
+import com.smart.gym.smartgym.dto.*;
 import com.smart.gym.smartgym.service.MonitorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +59,15 @@ public class MonitorController {
     public ResponseEntity<MonitorResponseDTO> insertMonitorActivity(@PathVariable Long id, @PathVariable Long activityId) {
         MonitorResponseDTO savedActivity = monitorService.insertMonitorActivity(id, activityId);
         return new ResponseEntity<>(savedActivity, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MonitorResponseDTO> updateMonitor(
+            @PathVariable Long id,
+            @Valid @RequestBody MonitorRequestDTO request) {
+
+        MonitorResponseDTO updatedMonitor = monitorService.updateMonitor(id, request);
+        return ResponseEntity.ok(updatedMonitor);
     }
 
     @DeleteMapping("/{id}")
