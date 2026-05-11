@@ -7,7 +7,7 @@ export interface Activity {
   isPremium: boolean;
 }
 
-export interface Member {
+export interface Person {
   id: number;
   name: string;
   dni: string;
@@ -17,20 +17,14 @@ export interface Member {
   postCode: string;
   phoneNumber: string;
   locality: string;
+}
+
+export interface Member extends Person {
   premium: boolean;
   active: boolean;
 }
 
-export interface Monitor {
-  id: number;
-  name: string;
-  dni: string;
-  birthdate: string;
-  address: string;
-  locality: string;
-  province: string;
-  postCode: string;
-  phoneNumber: string;
+export interface Monitor extends Person{
   salary: number;
 }
 

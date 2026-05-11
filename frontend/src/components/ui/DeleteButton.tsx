@@ -3,8 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { MemberService } from "@/src/services/member.service";
+import { MonitorService } from "@/src/services/monitor.service";
 
-export const DeleteButton = ({ id }: { id: number }) => {
+interface DeleteButtonProps {
+  id: number;
+  route: "members" | "monitors";
+}
+
+export const DeleteButton = ({ id, route }: DeleteButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
@@ -12,12 +18,16 @@ export const DeleteButton = ({ id }: { id: number }) => {
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await MemberService.delete(id);
+      if (route === "members") {
+        await MemberService.delete(id);
+      } else {
+        await MonitorService.delete(id);
+      }
       setIsOpen(false);
       router.refresh();
     } catch (error) {
-      console.error("Error deleting member:", error);
-      alert("Failed to delete member");
+      console.error("Error deleting " + (route === "members" ? "member" : "monitor") + ":", error);
+      alert("Failed to delete " + (route === "members" ? "member" : "monitor"));
     } finally {
       setIsDeleting(false);
     }
@@ -36,7 +46,7 @@ export const DeleteButton = ({ id }: { id: number }) => {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-sm">
             <h2 className="text-xl font-semibold mb-4 text-center">Confirm Deletion</h2>
-            <p className="mb-6">Are you sure you want to delete this member?</p>
+            <p className="mb-6">Are you sure you want to delete this {route === "members" ? "member" : "monitor"}?</p>
             <div className="flex justify-center gap-4">
               <button
                 onClick={() => setIsOpen(false)}

@@ -44,9 +44,9 @@ public class MemberService {
         return memberMapper.toDTO(savedMember);
     }
 
-    public Set<ActivityResponseDTO> getMemberActivities(String dni) {
-        Member member = memberRepository.findMemberByDni(dni)
-                .orElseThrow(() -> new IllegalArgumentException("No member found with DNI: " + dni));
+    public Set<ActivityResponseDTO> getMemberActivities(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No member found with ID: " + id));
 
         return member.getActivities().stream().map(activityMapper::toDTO).collect(Collectors.toSet());
     }

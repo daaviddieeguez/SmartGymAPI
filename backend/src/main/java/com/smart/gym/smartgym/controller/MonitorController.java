@@ -30,14 +30,19 @@ public class MonitorController {
         return new ResponseEntity<>(monitors, HttpStatus.OK);
     }
 
-    @GetMapping("/{dni}")
+    @GetMapping("/{id}")
+    public MonitorResponseDTO getMonitorById(@PathVariable Long id) {
+        return monitorService.getMonitorById(id);
+    }
+
+    @GetMapping("/dni/{dni}")
     public MonitorResponseDTO getMonitorByDni(@PathVariable String dni) {
         return monitorService.getMonitorByDni(dni);
     }
 
-    @GetMapping("/{dni}/activities")
-    public ResponseEntity<Set<ActivityResponseDTO>> getMonitorActivities(@PathVariable String dni) {
-        Set<ActivityResponseDTO> activities = monitorService.getMonitorActivities(dni);
+    @GetMapping("/{id}/activities")
+    public ResponseEntity<Set<ActivityResponseDTO>> getMonitorActivities(@PathVariable Long id) {
+        Set<ActivityResponseDTO> activities = monitorService.getMonitorActivities(id);
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
 
@@ -52,21 +57,21 @@ public class MonitorController {
         return new ResponseEntity<>(saveMonitor, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{dni}/activities/{activityId}")
-    public ResponseEntity<MonitorResponseDTO> insertMonitorActivity(@PathVariable String dni, @PathVariable Long activityId) {
-        MonitorResponseDTO savedActivity = monitorService.insertMonitorActivity(dni, activityId);
+    @PostMapping("/{id}/activities/{activityId}")
+    public ResponseEntity<MonitorResponseDTO> insertMonitorActivity(@PathVariable Long id, @PathVariable Long activityId) {
+        MonitorResponseDTO savedActivity = monitorService.insertMonitorActivity(id, activityId);
         return new ResponseEntity<>(savedActivity, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{dni}")
-    public ResponseEntity<Void> deleteMonitor(@PathVariable String dni) {
-        monitorService.deleteMonitor(dni);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMonitor(@PathVariable Long id) {
+        monitorService.deleteMonitor(id);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{dni}/activities/{activityId}")
-    public ResponseEntity<MonitorResponseDTO> removeMonitorActivity(@PathVariable String dni, @PathVariable Long activityId) {
-        MonitorResponseDTO updatedMonitor = monitorService.removeMonitorActivity(dni, activityId);
+    @DeleteMapping("/{id}/activities/{activityId}")
+    public ResponseEntity<MonitorResponseDTO> removeMonitorActivity(@PathVariable Long id, @PathVariable Long activityId) {
+        MonitorResponseDTO updatedMonitor = monitorService.removeMonitorActivity(id, activityId);
         return new ResponseEntity<>(updatedMonitor, HttpStatus.OK);
     }
 }
