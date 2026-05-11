@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class ActivityResponseDTO {
+    private Long id;
     private String name;
     private int duration;
     private int calories;

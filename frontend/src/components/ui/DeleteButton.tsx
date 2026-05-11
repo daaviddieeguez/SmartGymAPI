@@ -4,10 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { MemberService } from "@/src/services/member.service";
 import { MonitorService } from "@/src/services/monitor.service";
+import { ActivityService } from "@/src/services/activity.service";
 
 interface DeleteButtonProps {
   id: number;
-  route: "members" | "monitors";
+  route: "members" | "monitors" | "activities";
 }
 
 export const DeleteButton = ({ id, route }: DeleteButtonProps) => {
@@ -20,14 +21,17 @@ export const DeleteButton = ({ id, route }: DeleteButtonProps) => {
     try {
       if (route === "members") {
         await MemberService.delete(id);
-      } else {
+      } else if (route === "monitors") {
         await MonitorService.delete(id);
+      } else {
+        await ActivityService.delete(id);
       }
+      
       setIsOpen(false);
       router.refresh();
     } catch (error) {
-      console.error("Error deleting " + (route === "members" ? "member" : "monitor") + ":", error);
-      alert("Failed to delete " + (route === "members" ? "member" : "monitor"));
+      console.error("Error deleting " + (route === "members" ? "member" : route === "monitors" ? "monitor" : "activity") + ":", error);
+      alert("Failed to delete " + (route === "members" ? "member" : route === "monitors" ? "monitor" : "activity"));
     } finally {
       setIsDeleting(false);
     }
@@ -46,7 +50,7 @@ export const DeleteButton = ({ id, route }: DeleteButtonProps) => {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-sm">
             <h2 className="text-xl font-semibold mb-4 text-center">Confirm Deletion</h2>
-            <p className="mb-6">Are you sure you want to delete this {route === "members" ? "member" : "monitor"}?</p>
+            <p className="mb-6">Are you sure you want to delete this {route === "members" ? "member" : route === "monitors" ? "monitor" : "activity"}?</p>
             <div className="flex justify-center gap-4">
               <button
                 onClick={() => setIsOpen(false)}

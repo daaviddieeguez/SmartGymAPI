@@ -2,8 +2,11 @@ package com.smart.gym.smartgym.service;
 
 import com.smart.gym.smartgym.dto.ActivityRequestDTO;
 import com.smart.gym.smartgym.dto.ActivityResponseDTO;
+import com.smart.gym.smartgym.dto.MonitorRequestDTO;
+import com.smart.gym.smartgym.dto.MonitorResponseDTO;
 import com.smart.gym.smartgym.mapper.ActivityMapper;
 import com.smart.gym.smartgym.model.Activity;
+import com.smart.gym.smartgym.model.Monitor;
 import com.smart.gym.smartgym.repository.ActivityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,6 +31,13 @@ public class ActivityService {
         Page<Activity> activityPage = activityRepository.findAll(pageable);
 
         return activityPage.map(activityMapper::toDTO);
+    }
+
+    public ActivityResponseDTO getActivityById(Long id) {
+        Activity activity = activityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
+
+        return activityMapper.toDTO(activity);
     }
 
     public List<ActivityResponseDTO> getActivitiesByPremium(boolean isPremium) {
@@ -63,5 +73,21 @@ public class ActivityService {
     @Transactional
     public void deleteActivity(Long id) {
         activityRepository.deleteById(id);
+    }
+
+    @Transactional
+    public ActivityResponseDTO updateActivity(Long id, ActivityRequestDTO request) {
+        Activity activity = activityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Monitor not found with id: " + id));
+
+        activity.setName(request.getName());
+        activity.setDuration(request.getDuration());
+        activity.setCategory(request.getCategory());
+        activity.setPremium(request.isPremium());
+        activity.setCalories(request.getCalories());
+
+        Activity updatedActivity = activityRepository.save(activity);
+
+        return activityMapper.toDTO(updatedActivity);
     }
 }
