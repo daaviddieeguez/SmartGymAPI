@@ -30,7 +30,12 @@ public class MemberController {
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
-    @GetMapping("/{dni}")
+   @GetMapping("/{id}")
+   public ResponseEntity<MemberResponseDTO> getMemberById(@PathVariable Long id) {
+        return new ResponseEntity<>(memberService.getMemberById(id), HttpStatus.OK);
+   }
+
+    @GetMapping("/dni/{dni}")
     public MemberResponseDTO getMemberByDni(@PathVariable String dni) {
         return memberService.getMemberByDni(dni);
     }
@@ -61,6 +66,14 @@ public class MemberController {
     public ResponseEntity<MemberResponseDTO> insertMemberActivity(@PathVariable String dni, @PathVariable Long activityId) {
         MemberResponseDTO savedActivity = memberService.insertMemberActivity(dni, activityId);
         return new ResponseEntity<>(savedActivity, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MemberResponseDTO> updateMember(
+            @PathVariable Long id,
+            @Valid @RequestBody MemberRequestDTO request) {
+        MemberResponseDTO updatedMember = memberService.updateMember(id, request);
+        return ResponseEntity.ok(updatedMember);
     }
 
     @DeleteMapping("/{dni}")

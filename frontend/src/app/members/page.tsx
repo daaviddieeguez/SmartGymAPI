@@ -10,8 +10,6 @@ export default async function MembersPage(props: {
   const pageData = await MemberService.getAll(currentPage);
   const members = pageData.content;
 
-  console.log("First member data:", members[0]);
-
   return (
     <div className="p-8 md:w-3xl xl:w-7xl mx-auto">
       <div className="flex justify-between items-center mb-8">
@@ -73,9 +71,12 @@ export default async function MembersPage(props: {
                       </div>
                     </td>
                     <td className="p-4 text-right">
-                      <button className="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                      <Link
+                        href={`/members/${member.id}/edit`}
+                        className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors"
+                      >
                         Edit
-                      </button>
+                      </Link>
                     </td>
                   </tr>
                 ))}

@@ -8,8 +8,14 @@ export interface Activity {
 }
 
 export interface Member {
+  id: number;
   name: string;
   dni: string;
+  birthdate: string;
+  address: string;
+  province: string;
+  postCode: string;
+  phoneNumber: string;
   locality: string;
   premium: boolean;
   active: boolean;

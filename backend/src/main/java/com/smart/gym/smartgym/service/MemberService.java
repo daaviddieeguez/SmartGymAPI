@@ -3,6 +3,7 @@ package com.smart.gym.smartgym.service;
 import com.smart.gym.smartgym.dto.ActivityResponseDTO;
 import com.smart.gym.smartgym.dto.MemberRequestDTO;
 import com.smart.gym.smartgym.dto.MemberResponseDTO;
+import com.smart.gym.smartgym.dto.PersonRequestDTO;
 import com.smart.gym.smartgym.mapper.ActivityMapper;
 import com.smart.gym.smartgym.mapper.MemberMapper;
 import com.smart.gym.smartgym.model.Activity;
@@ -58,6 +59,11 @@ public class MemberService {
         return memberPage.map(memberMapper::toDTO);
     }
 
+    public MemberResponseDTO getMemberById(long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No member found with ID: " + id));
+        return memberMapper.toDTO(member);
+    }
+
     public List<MemberResponseDTO> getActiveMembers(boolean isActive) {
         List<Member> members = memberRepository.findMemberByActive(isActive);
 
@@ -102,5 +108,23 @@ public class MemberService {
         Member savedMember = memberRepository.save(member);
 
         return memberMapper.toDTO(savedMember);
+    }
+
+    @Transactional
+    public MemberResponseDTO updateMember(Long id, PersonRequestDTO request) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
+
+        member.setName(request.getName());
+        member.setBirthdate(request.getBirthdate());
+        member.setAddress(request.getAddress());
+        member.setLocality(request.getLocality());
+        member.setProvince(request.getProvince());
+        member.setPostCode(request.getPostCode());
+        member.setPhoneNumber(request.getPhoneNumber());
+
+        Member updatedMember = memberRepository.save(member);
+
+        return memberMapper.toDTO(updatedMember);
     }
 }
