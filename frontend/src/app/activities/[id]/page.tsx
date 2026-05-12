@@ -27,7 +27,7 @@ export default async function ActivityDetailsPage(props: { params: Promise<{ id:
             </Link>
             <Link
               href={`/activities/${activity.id}/edit`}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              className="bg-black hover:bg-zinc-800 text-white px-4 py-2 rounded-lg font-medium transition-colors"
             >
               Edit Activity
             </Link>

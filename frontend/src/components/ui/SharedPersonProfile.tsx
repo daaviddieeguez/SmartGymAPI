@@ -33,7 +33,7 @@ export const SharedPersonProfile = ({ person, baseRoute }: SharedPersonProfilePr
           </Link>
           <Link
             href={`/${baseRoute}/${person.id}/edit`}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm"
+            className="bg-black hover:bg-zinc-800 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm"
           >
             EDIT RECORD
           </Link>

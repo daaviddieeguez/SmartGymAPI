@@ -109,7 +109,7 @@ export default async function DashboardPage() {
             <h2 className="text-lg font-bold text-gray-800">Gym Activity Catalog</h2>
             <p className="text-xs text-gray-400 font-medium">Currently offering {activitiesData.totalElements} distinct classes</p>
           </div>
-          <Link href="/activities" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition-shadow shadow-sm hover:shadow-md">
+          <Link href="/activities" className="bg-black hover:bg-zinc-800 text-white px-4 py-2 rounded-lg text-xs font-bold transition-shadow shadow-sm hover:shadow-md">
             FULL SCHEDULE
           </Link>
         </div>

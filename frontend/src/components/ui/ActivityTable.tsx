@@ -34,7 +34,7 @@ export const ActivityTable = ({ items }: ActivityTableProps) => {
             <td className="px-6 py-5">
               <Link
                 href={`/activities/${activity.id}`}
-                className="font-bold text-gray-800 hover:text-blue-600 transition-colors"
+                className="font-bold text-black hover:text-gray-400 transition-colors"
               >
                 {activity.name}
               </Link>

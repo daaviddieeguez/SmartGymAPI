@@ -19,7 +19,7 @@ export default async function MembersPage(props: {
         </h1>
         <Link
           href="/members/new"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+          className="bg-black hover:bg-zinc-800 text-white px-4 py-2 rounded-lg font-medium transition-colors"
         >
           + New Member
         </Link>

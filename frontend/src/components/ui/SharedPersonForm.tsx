@@ -191,7 +191,7 @@ export const SharedPersonForm = ({ initialData = {}, baseRoute }: SharedPersonFo
             <button
               type="submit"
               disabled={isLoading}
-              className={`px-8 py-3 rounded-lg text-white font-bold text-sm tracking-wide transition-all shadow-sm ${isLoading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 hover:shadow-md"}`}
+              className={`px-8 py-3 rounded-lg text-white font-bold text-sm tracking-wide transition-all shadow-sm ${isLoading ? "bg-blue-400 cursor-not-allowed" : "bg-black hover:bg-zinc-800 hover:shadow-md"}`}
             >
               {isLoading ? "SAVING..." : "SAVE RECORD"}
             </button>

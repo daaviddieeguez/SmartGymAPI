@@ -15,11 +15,11 @@ export default async function MonitorsPage(props: {
     <div className="p-4 w-full min-h-screen bg-gray-50/50">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
-          Monitors Dashboard
+          Staff Monitors
         </h1>
         <Link
           href="/monitors/new"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+          className="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg font-medium transition-colors"
         >
           + New Monitor
         </Link>
