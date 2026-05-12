@@ -1,12 +1,15 @@
 import Link from "next/link";
-import { Person, Member, Monitor } from "@/src/types";
+import { Person, Member, Monitor, Activity } from "@/src/types";
+import { RegistrationManager } from "./RegistrationManager";
 
 interface SharedPersonProfileProps {
   person: Person;
   baseRoute: "members" | "monitors";
+  currentActivities: Activity[];
+  allActivities: Activity[];
 }
 
-export const SharedPersonProfile = ({ person, baseRoute }: SharedPersonProfileProps) => {
+export const SharedPersonProfile = ({ person, baseRoute, currentActivities, allActivities }: SharedPersonProfileProps) => {
   const isMember = baseRoute === "members";
   const isMonitor = baseRoute === "monitors";
 
@@ -134,7 +137,14 @@ export const SharedPersonProfile = ({ person, baseRoute }: SharedPersonProfilePr
             </div>
           </div>
         )}
-
+        
+        <RegistrationManager 
+          personId={person.id} 
+          baseRoute={baseRoute} 
+          currentActivities={currentActivities} 
+          allActivities={allActivities} 
+          isPremium={isMember ? memberData.premium : undefined}
+        />
       </div>
     </div>
   );

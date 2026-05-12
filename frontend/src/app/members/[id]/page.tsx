@@ -1,16 +1,27 @@
-import { SharedPersonProfile } from "@/src/components/ui/SharedPersonProfile";
 import { MemberService } from "@/src/services/member.service";
-import { notFound } from "next/navigation";
+import { ActivityService } from "@/src/services/activity.service";
+import { SharedPersonProfile } from "@/src/components/ui/SharedPersonProfile";
 
-export default async function MemberPage(props: { params: Promise<{ id: string }> }) {
+export default async function MemberProfilePage(props: {
+  params: Promise<{ id: string }>;
+}) {
   const params = await props.params;
   const memberId = Number(params.id);
 
-  try {
-    const member = await MemberService.getById(memberId);
+  const [member, currentActivities, activitiesPage] = await Promise.all([
+    MemberService.getById(memberId),
+    MemberService.getActivities(memberId),
+    ActivityService.getAll(0, 1000) 
+  ]);
 
-    return <SharedPersonProfile person={member} baseRoute="members" />;
-  } catch (error) {
-    notFound();
-}
+  const allActivitiesArray = activitiesPage.content;
+
+  return (
+    <SharedPersonProfile
+      person={member}
+      baseRoute="members"
+      currentActivities={currentActivities}
+      allActivities={allActivitiesArray}
+    />
+  );
 }

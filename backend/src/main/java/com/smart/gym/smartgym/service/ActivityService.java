@@ -2,12 +2,13 @@ package com.smart.gym.smartgym.service;
 
 import com.smart.gym.smartgym.dto.ActivityRequestDTO;
 import com.smart.gym.smartgym.dto.ActivityResponseDTO;
-import com.smart.gym.smartgym.dto.MonitorRequestDTO;
-import com.smart.gym.smartgym.dto.MonitorResponseDTO;
+import com.smart.gym.smartgym.dto.MemberResponseDTO;
 import com.smart.gym.smartgym.mapper.ActivityMapper;
+import com.smart.gym.smartgym.mapper.MemberMapper;
 import com.smart.gym.smartgym.model.Activity;
-import com.smart.gym.smartgym.model.Monitor;
+import com.smart.gym.smartgym.model.Member;
 import com.smart.gym.smartgym.repository.ActivityRepository;
+import com.smart.gym.smartgym.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,8 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
     private final ActivityMapper activityMapper;
+    private final MemberRepository memberRepository;
+    private final MemberMapper memberMapper;
 
     public Page<ActivityResponseDTO> getAllActivities(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -38,6 +43,18 @@ public class ActivityService {
                 .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
 
         return activityMapper.toDTO(activity);
+    }
+
+    public Set<MemberResponseDTO> getActivityMembers(Long activityId) {
+        if (!activityRepository.existsById(activityId)) {
+            throw new RuntimeException("Activity not found with id: " + activityId);
+        }
+
+        Set<Member> enrolledMembers = memberRepository.findByActivitiesId(activityId);
+
+        return enrolledMembers.stream()
+                .map(memberMapper::toDTO)
+                .collect(Collectors.toSet());
     }
 
     public List<ActivityResponseDTO> getActivitiesByPremium(boolean isPremium) {

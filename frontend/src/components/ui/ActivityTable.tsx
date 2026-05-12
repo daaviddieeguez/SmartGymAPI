@@ -63,7 +63,7 @@ export const ActivityTable = ({ items }: ActivityTableProps) => {
               <div className="flex justify-end items-center gap-4  transition-opacity">
                 <Link
                   href={`/activities/${activity.id}/edit`}
-                  className="text-blue-600 hover:text-blue-800 text-xs font-bold"
+                  className="text-black hover:text-gray-500 text-xs font-bold underline underline-offset-2 transition-colors"
                 >
                   EDIT
                 </Link>

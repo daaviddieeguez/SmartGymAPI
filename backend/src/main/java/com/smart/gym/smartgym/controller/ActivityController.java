@@ -2,6 +2,7 @@ package com.smart.gym.smartgym.controller;
 
 import com.smart.gym.smartgym.dto.ActivityRequestDTO;
 import com.smart.gym.smartgym.dto.ActivityResponseDTO;
+import com.smart.gym.smartgym.dto.MemberResponseDTO;
 import com.smart.gym.smartgym.service.ActivityService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/activities")
@@ -32,6 +34,12 @@ public class ActivityController {
     public ResponseEntity<ActivityResponseDTO> getActivityById(@PathVariable Long id) {
         ActivityResponseDTO activity = activityService.getActivityById(id);
         return ResponseEntity.ok(activity);
+    }
+
+    @GetMapping("/{id}/members")
+    public ResponseEntity<Set<MemberResponseDTO>> getActivityMembers(@PathVariable Long id) {
+        Set<MemberResponseDTO> members = activityService.getActivityMembers(id);
+        return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
     @GetMapping("/premium")

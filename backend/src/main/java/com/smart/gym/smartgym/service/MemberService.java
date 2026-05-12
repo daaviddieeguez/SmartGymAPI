@@ -3,7 +3,6 @@ package com.smart.gym.smartgym.service;
 import com.smart.gym.smartgym.dto.ActivityResponseDTO;
 import com.smart.gym.smartgym.dto.MemberRequestDTO;
 import com.smart.gym.smartgym.dto.MemberResponseDTO;
-import com.smart.gym.smartgym.dto.PersonRequestDTO;
 import com.smart.gym.smartgym.mapper.ActivityMapper;
 import com.smart.gym.smartgym.mapper.MemberMapper;
 import com.smart.gym.smartgym.model.Activity;
@@ -115,6 +114,8 @@ public class MemberService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
 
+        boolean wasPremium = member.isPremium();
+
         member.setName(request.getName());
         member.setBirthdate(request.getBirthdate());
         member.setAddress(request.getAddress());
@@ -122,8 +123,17 @@ public class MemberService {
         member.setProvince(request.getProvince());
         member.setPostCode(request.getPostCode());
         member.setPhoneNumber(request.getPhoneNumber());
-        member.setPremium(request.getPremium());
         member.setActive(request.getActive());
+        member.setPremium(request.getPremium());
+
+        if (wasPremium && !request.getPremium()) {
+
+            Set<Activity> premiumActivities = member.getActivities().stream()
+                    .filter(Activity::isPremium)
+                    .collect(Collectors.toSet());
+
+            member.getActivities().removeAll(premiumActivities);
+        }
 
         Member updatedMember = memberRepository.save(member);
 
