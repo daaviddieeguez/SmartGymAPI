@@ -25,18 +25,13 @@ export const ActivityForm = ({ initialData = {} }: ActivityFormProps) => {
     premium: initialData.premium || false,
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const value =
-      e.target.type === "checkbox"
-        ? (e.target as HTMLInputElement).checked
-        : e.target.value;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const value = e.target.type === "checkbox" ? (e.target as HTMLInputElement).checked : e.target.value;
     setFormData({ ...formData, [e.target.name]: value });
     setFieldErrors({ ...fieldErrors, [e.target.name]: "" });
   };
 
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setGeneralError(null);
@@ -51,169 +46,110 @@ export const ActivityForm = ({ initialData = {} }: ActivityFormProps) => {
         premium: formData.premium,
       };
 
-      console.log("Sending payload:", cleanPayload);
-
-      if (isEdit) {
-        await ActivityService.update(initialData.id, cleanPayload);
-      } else {
-        await ActivityService.create(cleanPayload);
-      }
+      if (isEdit) await ActivityService.update(initialData.id, cleanPayload);
+      else await ActivityService.create(cleanPayload);
 
       router.push("/activities");
       router.refresh();
     } catch (err: any) {
-      console.error("FULL ERROR OBJECT:", err);
-      if (err.errors && Object.keys(err.errors).length > 0) {
-        setFieldErrors(err.errors);
-      } else if (err.message) {
-        setGeneralError(err.message);
-      } else {
-        setGeneralError(
-          "An unexpected error occurred connecting to the server.",
-        );
-      }
+      if (err.errors && Object.keys(err.errors).length > 0) setFieldErrors(err.errors);
+      else if (err.message) setGeneralError(err.message);
+      else setGeneralError("An unexpected error occurred connecting to the server.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  const inputClass = "w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all";
+  const labelClass = "block text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1.5";
+
   return (
-    <div className="p-8 max-w-3xl mx-auto">
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white capitalize">
-          {isEdit ? "Edit" : "Create"} Activity
-        </h1>
-        <Link
-          href="/activities"
-          className="text-gray-500 hover:text-gray-700 dark:text-gray-400 transition-colors"
-        >
-          Cancel
+    <div className="p-6 w-full min-h-screen bg-gray-50/50 flex flex-col items-center">
+      
+      <div className="w-full max-w-3xl mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight capitalize">
+            {isEdit ? "Edit" : "Create"} Activity
+          </h1>
+          <p className="text-gray-500 font-medium mt-1">Configure class parameters and access levels.</p>
+        </div>
+        <Link href="/activities" className="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 px-5 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm">
+          CANCEL
         </Link>
       </div>
 
-      <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-800 p-8">
+      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
         {generalError && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg text-sm">
+          <div className="m-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm font-medium">
             {generalError}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Name */}
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Activity Name *
-              </label>
-              <input
-                type="text"
-                name="name"
-                required
-                value={formData.name}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-white dark:bg-zinc-950 border border-gray-300 dark:border-zinc-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
-              />
-              {fieldErrors.name && (
-                <p className="text-red-500 text-xs mt-1 font-medium">
-                  {fieldErrors.name}
-                </p>
-              )}
-            </div>
+        <form onSubmit={handleSubmit} className="p-8 space-y-8">
+          
+          <div>
+            <h3 className="text-sm font-bold text-gray-800 uppercase tracking-widest border-b border-gray-100 pb-3 mb-6">General Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="md:col-span-2">
+                <label className={labelClass}>Activity Name *</label>
+                <input type="text" name="name" required value={formData.name} onChange={handleChange} className={inputClass} placeholder="e.g. Morning Yoga Flow" />
+                {fieldErrors.name && <p className="text-red-500 text-xs mt-1 font-medium">{fieldErrors.name}</p>}
+              </div>
 
-            {/* Category Dropdown */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Category *
-              </label>
-              <select
-                name="category"
-                required
-                value={formData.category}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-white dark:bg-zinc-950 border border-gray-300 dark:border-zinc-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
-              >
-                <option value="cardio">Cardio</option>
-                <option value="fitness">Fitness</option>
-                <option value="pool">Pool</option>
-                <option value="cycling">Cycling</option>
-                <option value="hiit">HIIT</option>
-                <option value="core">Core</option>
-                <option value="dance">Dance</option>
-                <option value="bodycore">Bodycore</option>
-              </select>
-              {fieldErrors.category && (
-                <p className="text-red-500 text-xs mt-1 font-medium">
-                  {fieldErrors.category}
-                </p>
-              )}
-            </div>
-
-            {/* Duration */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Duration (minutes) *
-              </label>
-              <input
-                type="number"
-                name="duration"
-                required
-                min="1"
-                value={formData.duration}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-white dark:bg-zinc-950 border border-gray-300 dark:border-zinc-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
-              />
-              {fieldErrors.duration && (
-                <p className="text-red-500 text-xs mt-1 font-medium">
-                  {fieldErrors.duration}
-                </p>
-              )}
-            </div>
-
-            {/* Calories */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Calories Burned *
-              </label>
-              <input
-                type="number"
-                name="calories"
-                required
-                min="1"
-                value={formData.calories}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-white dark:bg-zinc-950 border border-gray-300 dark:border-zinc-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
-              />
-              {fieldErrors.calories && (
-                <p className="text-red-500 text-xs mt-1 font-medium">
-                  {fieldErrors.calories}
-                </p>
-              )}
-            </div>
-
-            {/* Premium Checkbox */}
-            <div className="flex items-center mt-6">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  name="premium"
-                  checked={formData.premium}
-                  onChange={handleChange}
-                  className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-zinc-800 dark:border-zinc-700"
-                />
-                <span className="font-medium text-gray-700 dark:text-gray-300">
-                  Premium Only Access
-                </span>
-              </label>
+              <div>
+                <label className={labelClass}>Category *</label>
+                <select name="category" required value={formData.category} onChange={handleChange} className={inputClass}>
+                  <option value="cardio">Cardio</option>
+                  <option value="fitness">Fitness</option>
+                  <option value="pool">Pool</option>
+                  <option value="cycling">Cycling</option>
+                  <option value="hiit">HIIT</option>
+                  <option value="core">Core</option>
+                  <option value="dance">Dance</option>
+                  <option value="bodycore">Bodycore</option>
+                </select>
+                {fieldErrors.category && <p className="text-red-500 text-xs mt-1 font-medium">{fieldErrors.category}</p>}
+              </div>
             </div>
           </div>
 
-          <div className="pt-6 border-t border-gray-100 dark:border-zinc-800 flex justify-end">
+          <div>
+            <h3 className="text-sm font-bold text-gray-800 uppercase tracking-widest border-b border-gray-100 pb-3 mb-6">Metrics & Access</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className={labelClass}>Duration (minutes) *</label>
+                <input type="number" name="duration" required min="1" value={formData.duration} onChange={handleChange} className={inputClass} />
+                {fieldErrors.duration && <p className="text-red-500 text-xs mt-1 font-medium">{fieldErrors.duration}</p>}
+              </div>
+
+              <div>
+                <label className={labelClass}>Calories Burned (avg) *</label>
+                <input type="number" name="calories" required min="1" value={formData.calories} onChange={handleChange} className={inputClass} />
+                {fieldErrors.calories && <p className="text-red-500 text-xs mt-1 font-medium">{fieldErrors.calories}</p>}
+              </div>
+
+              <div className="md:col-span-2 mt-2">
+                <label className="flex items-center gap-3 cursor-pointer group bg-gray-50/50 p-4 rounded-xl border border-gray-100">
+                  <div className="relative flex items-center justify-center">
+                    <input type="checkbox" name="premium" checked={formData.premium} onChange={handleChange} className="peer sr-only" />
+                    <div className="w-5 h-5 bg-white border-2 border-gray-300 rounded peer-checked:bg-amber-500 peer-checked:border-amber-500 transition-all"></div>
+                  </div>
+                  <div>
+                    <span className="block text-sm font-bold text-gray-700 group-hover:text-amber-600 transition-colors">Premium Only Access</span>
+                    <span className="text-xs text-gray-400 font-medium">Limit this activity to premium members.</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-6 border-t border-gray-100 flex justify-end">
             <button
               type="submit"
               disabled={isLoading}
-              className={`px-6 py-3 rounded-lg text-white font-medium transition-colors ${isLoading ? "bg-blue-400 dark:bg-blue-500/50 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"}`}
+              className={`px-8 py-3 rounded-lg text-white font-bold text-sm tracking-wide transition-all shadow-sm ${isLoading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 hover:shadow-md"}`}
             >
-              {isLoading ? "Saving..." : "Save Activity"}
+              {isLoading ? "SAVING..." : "SAVE ACTIVITY"}
             </button>
           </div>
         </form>

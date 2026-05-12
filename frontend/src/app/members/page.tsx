@@ -12,20 +12,20 @@ export default async function MembersPage(props: {
   const members = pageData.content;
 
   return (
-    <div className="p-8 md:w-3xl xl:w-7xl mx-auto">
+    <div className="p-6 w-full min-h-screen bg-gray-50/50">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">
+        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
           Members Dashboard
         </h1>
         <Link
           href="/members/new"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+          className="bg-black hover:bg-zinc-800 text-white px-4 py-2 rounded-lg font-medium transition-colors"
         >
           + New Member
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
         <SharedPersonTable items={members} baseRoute="members" />
         <div className="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50">
           <span className="text-sm text-gray-500">
