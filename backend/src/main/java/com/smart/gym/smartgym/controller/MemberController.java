@@ -30,14 +30,19 @@ public class MemberController {
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
-    @GetMapping("/{dni}")
+   @GetMapping("/{id}")
+   public ResponseEntity<MemberResponseDTO> getMemberById(@PathVariable Long id) {
+        return new ResponseEntity<>(memberService.getMemberById(id), HttpStatus.OK);
+   }
+
+    @GetMapping("/dni/{dni}")
     public MemberResponseDTO getMemberByDni(@PathVariable String dni) {
         return memberService.getMemberByDni(dni);
     }
 
-    @GetMapping("/{dni}/activities")
-    public ResponseEntity<Set<ActivityResponseDTO>> getMemberActivities(@PathVariable String dni) {
-        Set<ActivityResponseDTO> activities = memberService.getMemberActivities(dni);
+    @GetMapping("/{id}/activities")
+    public ResponseEntity<Set<ActivityResponseDTO>> getMemberActivities(@PathVariable Long id) {
+        Set<ActivityResponseDTO> activities = memberService.getMemberActivities(id);
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
 
@@ -57,21 +62,29 @@ public class MemberController {
         return new ResponseEntity<>(savedMember, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{dni}/activities/{activityId}")
-    public ResponseEntity<MemberResponseDTO> insertMemberActivity(@PathVariable String dni, @PathVariable Long activityId) {
-        MemberResponseDTO savedActivity = memberService.insertMemberActivity(dni, activityId);
+    @PostMapping("/{id}/activities/{activityId}")
+    public ResponseEntity<MemberResponseDTO> insertMemberActivity(@PathVariable Long id, @PathVariable Long activityId) {
+        MemberResponseDTO savedActivity = memberService.insertMemberActivity(id, activityId);
         return new ResponseEntity<>(savedActivity, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{dni}")
-    public ResponseEntity<Void> deleteMember(@PathVariable String dni) {
-        memberService.deleteMember(dni);
+    @PutMapping("/{id}")
+    public ResponseEntity<MemberResponseDTO> updateMember(
+            @PathVariable Long id,
+            @Valid @RequestBody MemberRequestDTO request) {
+        MemberResponseDTO updatedMember = memberService.updateMember(id, request);
+        return ResponseEntity.ok(updatedMember);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMember(@PathVariable Long id) {
+        memberService.deleteMember(id);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{dni}/activities/{activityId}")
-    public ResponseEntity<MemberResponseDTO> removeMemberActivity(@PathVariable String dni, @PathVariable Long activityId) {
-        MemberResponseDTO updatedMember = memberService.removeMemberActivity(dni, activityId);
+    @DeleteMapping("/{id}/activities/{activityId}")
+    public ResponseEntity<MemberResponseDTO> removeMemberActivity(@PathVariable Long id, @PathVariable Long activityId) {
+        MemberResponseDTO updatedMember = memberService.removeMemberActivity(id, activityId);
         return new ResponseEntity<>(updatedMember, HttpStatus.OK);
     }
 }

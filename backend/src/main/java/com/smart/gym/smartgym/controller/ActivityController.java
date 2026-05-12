@@ -2,6 +2,7 @@ package com.smart.gym.smartgym.controller;
 
 import com.smart.gym.smartgym.dto.ActivityRequestDTO;
 import com.smart.gym.smartgym.dto.ActivityResponseDTO;
+import com.smart.gym.smartgym.dto.MemberResponseDTO;
 import com.smart.gym.smartgym.service.ActivityService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/activities")
@@ -26,6 +28,18 @@ public class ActivityController {
     ) {
         Page<ActivityResponseDTO> activities = activityService.getAllActivities(page, size);
         return new ResponseEntity<>(activities, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ActivityResponseDTO> getActivityById(@PathVariable Long id) {
+        ActivityResponseDTO activity = activityService.getActivityById(id);
+        return ResponseEntity.ok(activity);
+    }
+
+    @GetMapping("/{id}/members")
+    public ResponseEntity<Set<MemberResponseDTO>> getActivityMembers(@PathVariable Long id) {
+        Set<MemberResponseDTO> members = activityService.getActivityMembers(id);
+        return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
     @GetMapping("/premium")
@@ -48,6 +62,15 @@ public class ActivityController {
     public ResponseEntity<ActivityResponseDTO> voteForActivity(@PathVariable Long id, @PathVariable int score) {
         ActivityResponseDTO updatedActivity = activityService.addVote(id, score);
         return new ResponseEntity<>(updatedActivity, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ActivityResponseDTO> updateActivity(
+            @PathVariable Long id,
+            @Valid @RequestBody ActivityRequestDTO request) {
+
+        ActivityResponseDTO updatedActivity = activityService.updateActivity(id, request);
+        return ResponseEntity.ok(updatedActivity);
     }
 
     @DeleteMapping("/{id}")

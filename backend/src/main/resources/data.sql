@@ -1,15 +1,15 @@
 -- ACTIVITIES
-INSERT INTO activity (id, name, calories, category, duration, is_premium) VALUES
-                                                                              (1, 'Alpha CrossFit', 600, 'HIIT', 60, false),
-                                                                              (2, 'Yoga Flex', 300, 'BODYCARE', 45, false),
-                                                                              (3, 'Pro Spinning', 550, 'CYCLING', 45, false),
-                                                                              (4, 'Zumba Party', 400, 'DANCE', 60, false),
-                                                                              (5, 'Premium Boxing', 700, 'FITNESS', 90, true),
-                                                                              (6, 'Core Blast', 250, 'CORE', 30, false),
-                                                                              (7, 'Open Pool', 450, 'POOL', 60, false),
-                                                                              (8, 'Hit Cardio', 500, 'CARDIO', 45, false),
-                                                                              (9, 'Reformer Pilates', 350, 'BODYCARE', 50, true),
-                                                                              (10, 'Indoor Triathlon', 800, 'HIIT', 120, true);
+INSERT INTO activity (id, name, calories, category, duration, is_premium, is_archived) VALUES
+                                                                              (1, 'Alpha CrossFit', 600, 'HIIT', 60, false, false),
+                                                                              (2, 'Yoga Flex', 300, 'BODYCARE', 45, false, false),
+                                                                              (3, 'Pro Spinning', 550, 'CYCLING', 45, false, false),
+                                                                              (4, 'Zumba Party', 400, 'DANCE', 60, false, false),
+                                                                              (5, 'Premium Boxing', 700, 'FITNESS', 90, true, false),
+                                                                              (6, 'Core Blast', 250, 'CORE', 30, false, false),
+                                                                              (7, 'Open Pool', 450, 'POOL', 60, false, false),
+                                                                              (8, 'Hit Cardio', 500, 'CARDIO', 45, false, false),
+                                                                              (9, 'Reformer Pilates', 350, 'BODYCARE', 50, true, false),
+                                                                              (10, 'Indoor Triathlon', 800, 'HIIT', 120, true, false);
 
 -- PEOPLE
 INSERT INTO person (id, name, dni, birthdate, address, locality, province, post_code, phone_number) VALUES

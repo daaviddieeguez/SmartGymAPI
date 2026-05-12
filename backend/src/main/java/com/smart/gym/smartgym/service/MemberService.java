@@ -43,9 +43,9 @@ public class MemberService {
         return memberMapper.toDTO(savedMember);
     }
 
-    public Set<ActivityResponseDTO> getMemberActivities(String dni) {
-        Member member = memberRepository.findMemberByDni(dni)
-                .orElseThrow(() -> new IllegalArgumentException("No member found with DNI: " + dni));
+    public Set<ActivityResponseDTO> getMemberActivities(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No member found with ID: " + id));
 
         return member.getActivities().stream().map(activityMapper::toDTO).collect(Collectors.toSet());
     }
@@ -58,6 +58,11 @@ public class MemberService {
         return memberPage.map(memberMapper::toDTO);
     }
 
+    public MemberResponseDTO getMemberById(long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No member found with ID: " + id));
+        return memberMapper.toDTO(member);
+    }
+
     public List<MemberResponseDTO> getActiveMembers(boolean isActive) {
         List<Member> members = memberRepository.findMemberByActive(isActive);
 
@@ -65,8 +70,8 @@ public class MemberService {
     }
 
     @Transactional
-    public void deleteMember(String dni) {
-        memberRepository.deleteMemberByDni(dni);
+    public void deleteMember(Long id) {
+        memberRepository.deleteById(id);
     }
 
 
@@ -76,8 +81,8 @@ public class MemberService {
         return memberMapper.toDTO(member);
     }
 
-    public MemberResponseDTO insertMemberActivity(String dni, Long idActivity) {
-        Member member = memberRepository.findMemberByDni(dni).orElseThrow(() -> new IllegalArgumentException("No member found with DNI: " + dni));
+    public MemberResponseDTO insertMemberActivity(Long id, Long idActivity) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No member found with ID: " + id));
 
         Activity activity = activityRepository.findById(idActivity).orElseThrow(() -> new IllegalArgumentException("No activity found with ID: " + idActivity));
 
@@ -92,8 +97,8 @@ public class MemberService {
         return memberMapper.toDTO(savedMember);
     }
 
-    public MemberResponseDTO removeMemberActivity(String dni, Long idActivity) {
-        Member member = memberRepository.findMemberByDni(dni).orElseThrow(() -> new IllegalArgumentException("No member found with DNI: " + dni));
+    public MemberResponseDTO removeMemberActivity(Long id, Long idActivity) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No member found with ID: " + id));
 
         Activity activity = activityRepository.findById(idActivity).orElseThrow(() -> new IllegalArgumentException("No activity found with ID: " + idActivity));
 
@@ -102,5 +107,36 @@ public class MemberService {
         Member savedMember = memberRepository.save(member);
 
         return memberMapper.toDTO(savedMember);
+    }
+
+    @Transactional
+    public MemberResponseDTO updateMember(Long id, MemberRequestDTO request) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
+
+        boolean wasPremium = member.isPremium();
+
+        member.setName(request.getName());
+        member.setBirthdate(request.getBirthdate());
+        member.setAddress(request.getAddress());
+        member.setLocality(request.getLocality());
+        member.setProvince(request.getProvince());
+        member.setPostCode(request.getPostCode());
+        member.setPhoneNumber(request.getPhoneNumber());
+        member.setActive(request.getActive());
+        member.setPremium(request.getPremium());
+
+        if (wasPremium && !request.getPremium()) {
+
+            Set<Activity> premiumActivities = member.getActivities().stream()
+                    .filter(Activity::isPremium)
+                    .collect(Collectors.toSet());
+
+            member.getActivities().removeAll(premiumActivities);
+        }
+
+        Member updatedMember = memberRepository.save(member);
+
+        return memberMapper.toDTO(updatedMember);
     }
 }

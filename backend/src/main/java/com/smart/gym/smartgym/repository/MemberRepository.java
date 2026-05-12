@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -13,5 +14,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findMemberByActive(boolean active);
 
-    void deleteMemberByDni(String dni);
+    Set<Member> findByActivitiesId(Long activityId);
 }
