@@ -61,4 +61,18 @@ export const ActivityService = {
     if (!response.ok) throw new Error("Failed to fetch enrolled members");
     return response.json();
   },
+
+  // --- VOTING ---
+  addVote: async (id: number, score: number) => {
+    const response = await fetch(`${ENDPOINT}/${id}/votes/${score}`, {
+      method: "POST",
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+      throw new Error(errorData?.message || "Failed to submit rating");
+    }
+    
+    return response.json();
+  },
 };

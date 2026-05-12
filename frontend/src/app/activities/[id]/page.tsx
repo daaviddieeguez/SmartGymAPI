@@ -2,6 +2,7 @@ import { ActivityService } from "@/src/services/activity.service";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Member } from "@/src/types";
+import { StarRating } from "@/src/components/ui/StarRating";
 
 export default async function ActivityDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -54,12 +55,16 @@ export default async function ActivityDetailsPage({ params }: { params: Promise<
               </span>
             </div>
             
-            <div className={`px-4 py-2 text-xs font-bold rounded-full uppercase tracking-wider border ${
-              activity.premium 
-                ? "bg-amber-50 text-amber-700 border-amber-200" 
-                : "bg-gray-50 text-gray-600 border-gray-200"
-            }`}>
-              {activity.premium ? "PREMIUM RESTRICTION" : "OPEN ACCESS"}
+            <div className="flex items-center gap-6">
+              <StarRating activityId={activity.id} />
+
+              <div className={`px-4 py-2 text-xs font-bold rounded-full uppercase tracking-wider border ${
+                activity.premium 
+                  ? "bg-amber-50 text-amber-700 border-amber-200" 
+                  : "bg-gray-50 text-gray-600 border-gray-200"
+              }`}>
+                {activity.premium ? "PREMIUM RESTRICTION" : "OPEN ACCESS"}
+              </div>
             </div>
           </div>
 
@@ -133,7 +138,6 @@ export default async function ActivityDetailsPage({ params }: { params: Promise<
             )}
           </div>
         </div>
-
       </div>
     );
     
