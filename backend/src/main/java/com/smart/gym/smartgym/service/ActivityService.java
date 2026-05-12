@@ -89,7 +89,12 @@ public class ActivityService {
 
     @Transactional
     public void deleteActivity(Long id) {
-        activityRepository.deleteById(id);
+        Activity activity = activityRepository
+                .findById(id).orElseThrow(() -> new IllegalArgumentException("No activity found with ID: " + id));
+
+        activity.setArchived(true);
+
+        activityRepository.save(activity);
     }
 
     @Transactional

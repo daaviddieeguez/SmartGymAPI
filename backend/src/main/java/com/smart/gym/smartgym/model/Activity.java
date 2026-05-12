@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLRestriction("is_archived = false")
 public class Activity {
 
     @Id
@@ -45,4 +47,7 @@ public class Activity {
 
     @ManyToMany(mappedBy = "activities")
     private Set<Monitor> monitors = new HashSet<>();
+
+    @Column(name = "is_archived", nullable = false)
+    private boolean archived = false;
 }
