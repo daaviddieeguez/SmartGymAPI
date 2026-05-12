@@ -5,6 +5,7 @@ export interface Activity {
   category: string;
   duration: number;
   premium: boolean;
+  averageScore: number;
 }
 
 export interface Person {

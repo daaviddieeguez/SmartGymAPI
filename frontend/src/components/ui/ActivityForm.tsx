@@ -23,6 +23,7 @@ export const ActivityForm = ({ initialData = {} }: ActivityFormProps) => {
     duration: initialData.duration || "",
     calories: initialData.calories || "",
     premium: initialData.premium || false,
+    averageScore: initialData.averageScore || 0,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -44,6 +45,7 @@ export const ActivityForm = ({ initialData = {} }: ActivityFormProps) => {
         duration: Number(formData.duration),
         calories: Number(formData.calories),
         premium: formData.premium,
+        averageScore: initialData.averageScore || 0,
       };
 
       if (isEdit) await ActivityService.update(initialData.id, cleanPayload);
