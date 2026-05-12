@@ -4,7 +4,6 @@ import com.smart.gym.smartgym.dto.*;
 import com.smart.gym.smartgym.mapper.ActivityMapper;
 import com.smart.gym.smartgym.mapper.MonitorMapper;
 import com.smart.gym.smartgym.model.Activity;
-import com.smart.gym.smartgym.model.Member;
 import com.smart.gym.smartgym.model.Monitor;
 import com.smart.gym.smartgym.repository.ActivityRepository;
 import com.smart.gym.smartgym.repository.MonitorRepository;

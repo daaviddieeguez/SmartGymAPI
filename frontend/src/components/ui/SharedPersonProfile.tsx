@@ -143,6 +143,7 @@ export const SharedPersonProfile = ({ person, baseRoute, currentActivities, allA
           baseRoute={baseRoute} 
           currentActivities={currentActivities} 
           allActivities={allActivities} 
+          isPremium={isMember ? memberData.premium : undefined}
         />
       </div>
     </div>

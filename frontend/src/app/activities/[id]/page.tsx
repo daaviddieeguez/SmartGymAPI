@@ -1,107 +1,144 @@
 import { ActivityService } from "@/src/services/activity.service";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Member } from "@/src/types";
 
-export default async function ActivityDetailsPage(props: { params: Promise<{ id: string }> }) {
-  const params = await props.params;
-  const activityId = Number(params.id);
+export default async function ActivityDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const activityId = Number(resolvedParams.id);
+
+  if (isNaN(activityId)) return notFound();
 
   try {
-    const activity = await ActivityService.getById(activityId);
+    const [activity, enrolledMembers] = await Promise.all([
+      ActivityService.getById(activityId),
+      ActivityService.getMembers(activityId) 
+    ]);
 
     return (
-      <div className="p-8 max-w-4xl mx-auto">
+      <div className="p-6 w-full min-h-screen bg-gray-50/50">
+        
+        {/* PAGE HEADER */}
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-              Activity Details
+            <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+              Activity Profile
             </h1>
-            <p className="text-gray-500 dark:text-gray-400 mt-1">Viewing information for {activity.name}</p>
+            <p className="text-gray-500 font-medium mt-1">Viewing parameters for {activity.name}</p>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <Link
               href="/activities"
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors py-2 font-medium"
+              className="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 px-5 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm"
             >
-              Back to Dashboard
+              BACK TO SCHEDULE
             </Link>
             <Link
               href={`/activities/${activity.id}/edit`}
-              className="bg-black hover:bg-zinc-800 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              className="bg-black hover:bg-zinc-800 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm"
             >
-              Edit Activity
+              EDIT PARAMETERS
             </Link>
           </div>
         </div>
 
-        {/* INFORMATION CARD */}
-        <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-800 p-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-            {/* General Info */}
+        {/* MAIN DETAILS CARD */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-8">
+          
+          {/* HEADER HIGHLIGHT */}
+          <div className="p-8 border-b border-gray-100 bg-white flex justify-between items-center">
             <div>
-              <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white border-b pb-2 dark:border-zinc-800">
-                General Information
-              </h2>
-              <ul className="space-y-4 text-gray-600 dark:text-gray-400">
-                <li className="flex flex-col">
-                  <span className="text-xs uppercase tracking-wider text-gray-400 dark:text-zinc-500 font-semibold mb-1">Name</span>
-                  <span className="text-lg text-gray-900 dark:text-gray-100 font-medium">{activity.name}</span>
-                </li>
-                <li className="flex flex-col">
-                  <span className="text-xs uppercase tracking-wider text-gray-400 dark:text-zinc-500 font-semibold mb-1">Category</span>
-                  <span className="text-gray-900 dark:text-gray-200 capitalize">{activity.category}</span>
-                </li>
-              </ul>
+              <h2 className="text-2xl font-bold text-gray-900">{activity.name}</h2>
+              <span className="inline-block mt-2 px-2 py-1 bg-gray-100 text-gray-600 rounded text-[10px] font-bold uppercase tracking-widest">
+                {activity.category}
+              </span>
             </div>
             
-            {/* Workout Metrics */}
-            <div>
-              <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white border-b pb-2 dark:border-zinc-800">
-                Workout Metrics
-              </h2>
-              <ul className="space-y-4 text-gray-600 dark:text-gray-400">
-                <li className="flex flex-col">
-                  <span className="text-xs uppercase tracking-wider text-gray-400 dark:text-zinc-500 font-semibold mb-1">Duration</span>
-                  <span className="text-gray-900 dark:text-gray-200">{activity.duration} minutes</span>
-                </li>
-                <li className="flex flex-col">
-                  <span className="text-xs uppercase tracking-wider text-gray-400 dark:text-zinc-500 font-semibold mb-1">Estimated Calories</span>
-                  <span className="text-gray-900 dark:text-gray-200">{activity.calories} kcal</span>
-                </li>
-              </ul>
+            <div className={`px-4 py-2 text-xs font-bold rounded-full uppercase tracking-wider border ${
+              activity.premium 
+                ? "bg-amber-50 text-amber-700 border-amber-200" 
+                : "bg-gray-50 text-gray-600 border-gray-200"
+            }`}>
+              {activity.premium ? "PREMIUM RESTRICTION" : "OPEN ACCESS"}
             </div>
+          </div>
 
-            {/* Access Level */}
-            <div className="md:col-span-2 mt-4 pt-6 border-t border-gray-100 dark:border-zinc-800">
-              <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-                Access Level
-              </h2>
-              <div className="bg-gray-50 dark:bg-zinc-800/50 p-6 rounded-lg flex items-center justify-between border border-gray-100 dark:border-zinc-700/50">
+          {/* DATA GRID */}
+          <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+            <div>
+              <h3 className="text-sm font-bold text-gray-800 uppercase tracking-widest border-b border-gray-100 pb-3 mb-5">
+                Class Metrics
+              </h3>
+              <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <span className="block font-medium text-gray-900 dark:text-white mb-1">Membership Requirement</span>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {activity.premium 
-                      ? "Only Premium members can book and attend this class." 
-                      : "This class is available to all active gym members."}
-                  </span>
+                  <span className="block text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-1">Duration</span>
+                  <span className="text-lg font-bold text-gray-900">{activity.duration} <span className="text-sm text-gray-500 font-medium">min</span></span>
                 </div>
-                <span className={`px-4 py-2 text-sm font-bold rounded-full uppercase tracking-wider ${
-                  activity.premium 
-                    ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50" 
-                    : "bg-slate-200 text-slate-700 dark:bg-zinc-700 dark:text-zinc-200"
-                }`}>
-                  {activity.premium ? "Premium" : "Standard"}
-                </span>
+                <div>
+                  <span className="block text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-1">Estimated Burn</span>
+                  <span className="text-lg font-bold text-gray-900">{activity.calories} <span className="text-sm text-gray-500 font-medium">kcal</span></span>
+                </div>
               </div>
             </div>
-
           </div>
         </div>
+
+        {/* ENROLLED MEMBERS SECTION */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+            <div>
+              <h2 className="text-lg font-bold text-gray-800">Class Roster</h2>
+              <p className="text-xs text-gray-400 font-medium">Current enrolled members</p>
+            </div>
+            <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded text-xs font-bold">
+              {enrolledMembers.length} REGISTERED
+            </span>
+          </div>
+
+          <div className="overflow-x-auto w-full">
+            {enrolledMembers.length === 0 ? (
+              <div className="p-12 text-center text-gray-400">
+                <p className="text-sm font-semibold uppercase tracking-widest">No members enrolled yet.</p>
+              </div>
+            ) : (
+              <table className="w-full text-left border-collapse whitespace-nowrap">
+                <thead>
+                  <tr className="bg-gray-50/50 border-b border-gray-100 text-gray-400 text-[10px] uppercase tracking-widest font-semibold">
+                    <th className="px-6 py-4">Member Name</th>
+                    <th className="px-6 py-4">Identification (DNI)</th>
+                    <th className="px-6 py-4 text-right">View Profile</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {enrolledMembers.map((member: Member) => (
+                    <tr key={member.id} className="hover:bg-gray-50 transition-colors group">
+                      <td className="px-6 py-5 font-bold text-gray-800">
+                        {member.name}
+                      </td>
+                      <td className="px-6 py-5 font-mono text-xs text-gray-500 uppercase">
+                        {member.dni}
+                      </td>
+                      <td className="px-6 py-5 text-right">
+                        <Link
+                          href={`/members/${member.id}`}
+                          className="text-black hover:text-gray-500 text-xs font-bold underline underline-offset-2 transition-colors opacity-0 group-hover:opacity-100"
+                        >
+                          OPEN RECORD
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </div>
+
       </div>
     );
     
   } catch (error) {
+    console.error(error);
     notFound(); 
   }
 }

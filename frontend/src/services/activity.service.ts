@@ -55,4 +55,10 @@ export const ActivityService = {
     });
     if (!response.ok) throw new Error("Failed to delete activity");
   },
+
+  getMembers: async (id: number) => {
+    const response = await fetch(`${ENDPOINT}/${id}/members`, { cache: "no-store" });
+    if (!response.ok) throw new Error("Failed to fetch enrolled members");
+    return response.json();
+  },
 };

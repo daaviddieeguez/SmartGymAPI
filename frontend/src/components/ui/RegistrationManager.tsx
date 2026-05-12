@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation";
 import { Activity } from "@/src/types";
 import { MemberService } from "@/src/services/member.service";
 import { MonitorService } from "@/src/services/monitor.service";
+import { ErrorModal } from "./ErrorModal";
 
 interface RegistrationManagerProps {
   personId: number;
   baseRoute: "members" | "monitors";
   currentActivities: Activity[];
   allActivities: Activity[];
+  isPremium?: boolean;
 }
 
 export const RegistrationManager = ({
@@ -18,19 +20,26 @@ export const RegistrationManager = ({
   baseRoute,
   currentActivities,
   allActivities,
+  isPremium = false,
 }: RegistrationManagerProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState<string>("");
+  
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Filter out activities the person is already enrolled in
-  const availableActivities = allActivities.filter(
-    (activity) =>
-      !currentActivities.find(
-        (currentActivity) => currentActivity.id === activity.id,
-      ) &&
-      (!activity.premium || (activity.premium && baseRoute === "monitors")),
-  );
+  const availableActivities = allActivities.filter((activity) => {
+    const isEnrolled = currentActivities.some((currentActivity) => currentActivity.id === activity.id);
+    if (isEnrolled) return false;
+
+    if (activity.premium) {
+      if (baseRoute === "monitors") return true;
+      if (baseRoute === "members" && isPremium) return true;
+      return false;
+    }
+
+    return true;
+  });
 
   const handleAssign = async () => {
     if (!selectedActivity) return;
@@ -43,9 +52,9 @@ export const RegistrationManager = ({
       }
       setSelectedActivity("");
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("Failed to assign activity.");
+      setErrorMessage(error.message || "Failed to assign activity. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -61,16 +70,22 @@ export const RegistrationManager = ({
         await MonitorService.removeActivity(personId, activityId);
       }
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("Failed to remove activity.");
+      setErrorMessage("Failed to remove the activity. It may be locked by the system.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="p-8 bg-gray-50/50 border-t border-gray-100">
+    <div className="p-8 bg-gray-50/50 border-t border-gray-100 relative">
+      <ErrorModal 
+        isOpen={errorMessage !== null} 
+        message={errorMessage || ""} 
+        onClose={() => setErrorMessage(null)} 
+      />
+
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-sm font-bold text-gray-800 uppercase tracking-widest">
           {baseRoute === "members" ? "Class Enrollments" : "Assigned Classes"}
@@ -106,13 +121,7 @@ export const RegistrationManager = ({
                         {activity.calories} kcal
                       </td>
                       <td className="px-6 py-4 text-center">
-                        <span
-                          className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                            activity.premium
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-gray-100 text-gray-800"
-                          }`}
-                        >
+                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${activity.premium ? "bg-amber-100 text-amber-700" : "bg-gray-100 text-gray-800"}`}>
                           {activity.premium ? "Premium" : "Standard"}
                         </span>
                       </td>
@@ -137,22 +146,17 @@ export const RegistrationManager = ({
 
       {/* ASSIGN NEW ACTIVITY CONTROLS */}
       {availableActivities.length > 0 ? (
-        <div className="flex gap-4">
+        <div className="flex gap-4 flex-col md:flex-row">
           <select
             value={selectedActivity}
             onChange={(e) => setSelectedActivity(e.target.value)}
             className="grow px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 outline-none focus:ring-2 focus:ring-black transition-all"
           >
-            <option value="" disabled>
-              Select an activity to assign...
-            </option>
+            <option value="" disabled>Select an activity to assign...</option>
             {availableActivities.map((activity) => (
               <option key={activity.id} value={activity.id}>
-                {activity.name} ({activity.category.toUpperCase()}) -{" "}
-                {activity.duration} min,{" "}
-                {baseRoute === "members"
-                  ? `${activity.calories} kcal [${activity.premium ? "Premium" : "Standard"}]`
-                  : ""}
+                {activity.name} ({activity.category.toUpperCase()}) - {activity.duration} min
+                {baseRoute === "members" ? ` [${activity.premium ? "Premium" : "Standard"}]` : ""}
               </option>
             ))}
           </select>
@@ -166,7 +170,9 @@ export const RegistrationManager = ({
         </div>
       ) : (
         <div className="text-xs text-gray-400 font-bold uppercase tracking-widest">
-          All available activities are assigned.
+          {baseRoute === "members" && !isPremium 
+            ? "No more standard activities available. Upgrade to Premium for more!" 
+            : "All available activities are assigned."}
         </div>
       )}
     </div>
