@@ -2,6 +2,9 @@ import Link from "next/link";
 import { MemberService } from "@/src/services/member.service";
 import { MonitorService } from "@/src/services/monitor.service";
 import { ActivityService } from "@/src/services/activity.service";
+import { RiBookLine, RiTeamLine } from "react-icons/ri";
+import { LuBriefcaseBusiness } from "react-icons/lu";
+import { TfiLayoutAccordionList, TfiLayoutAccordionMerged } from "react-icons/tfi";
 
 export default async function DashboardPage() {
   const [membersData, monitorsData, activitiesData] = await Promise.all([
@@ -20,6 +23,42 @@ export default async function DashboardPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">System Control Panel</h1>
         <p className="text-gray-500 font-medium">Global overview of Smart Gym operations.</p>
+      </div>
+
+      {/* STAT CARDS */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {/* Metric 1: Members */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex items-center justify-between">
+          <div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Members</p>
+            <h3 className="text-3xl font-extrabold text-gray-900">{membersData.totalElements}</h3>
+          </div>
+          <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+            <RiTeamLine className="w-6 h-6" />
+          </div>
+        </div>
+
+        {/* Metric 2: Staff */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex items-center justify-between">
+          <div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Active Monitors</p>
+            <h3 className="text-3xl font-extrabold text-gray-900">{monitorsData.totalElements}</h3>
+          </div>
+          <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
+            <LuBriefcaseBusiness className="w-6 h-6" />
+          </div>
+        </div>
+
+        {/* Metric 3: Catalog */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex items-center justify-between">
+          <div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Class Catalog</p>
+            <h3 className="text-3xl font-extrabold text-gray-900">{activitiesData.totalElements}</h3>
+          </div>
+          <div className="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center text-amber-600">
+            <TfiLayoutAccordionMerged className="w-6 h-6" />
+          </div>
+        </div>
       </div>
 
       {/* TOP GRID: Members & Monitors */}
