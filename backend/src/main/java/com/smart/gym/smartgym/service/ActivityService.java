@@ -2,11 +2,8 @@ package com.smart.gym.smartgym.service;
 
 import com.smart.gym.smartgym.dto.ActivityRequestDTO;
 import com.smart.gym.smartgym.dto.ActivityResponseDTO;
-import com.smart.gym.smartgym.dto.MonitorRequestDTO;
-import com.smart.gym.smartgym.dto.MonitorResponseDTO;
 import com.smart.gym.smartgym.mapper.ActivityMapper;
 import com.smart.gym.smartgym.model.Activity;
-import com.smart.gym.smartgym.model.Monitor;
 import com.smart.gym.smartgym.repository.ActivityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -5,8 +5,8 @@ const ENDPOINT = `${API_BASE_URL}/activities`;
 
 export const ActivityService = {
   // GET: Fetch all activities
-  getAll: async (page: number = 0): Promise<PageResponse<Activity>> => {
-      const response = await fetch(`${ENDPOINT}?page=${page}&size=9`);
+  getAll: async (page: number = 0, size: number = 9): Promise<PageResponse<Activity>> => {
+      const response = await fetch(`${ENDPOINT}?page=${page}&size=${size}`);
       if (!response.ok) throw new Error("Failed to fetch activities");
       return response.json();
     },

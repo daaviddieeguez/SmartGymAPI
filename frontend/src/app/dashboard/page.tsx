@@ -4,7 +4,6 @@ import { MonitorService } from "@/src/services/monitor.service";
 import { ActivityService } from "@/src/services/activity.service";
 
 export default async function DashboardPage() {
-  // Fetch data in parallel
   const [membersData, monitorsData, activitiesData] = await Promise.all([
     MemberService.getAll(0),
     MonitorService.getAll(0),

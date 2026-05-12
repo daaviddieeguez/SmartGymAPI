@@ -6,8 +6,8 @@ const ENDPOINT = `${API_BASE_URL}/members`;
 export const MemberService = {
   
   // GET: Fetch all members
-  getAll: async (page: number = 0): Promise<PageResponse<Member>> => {
-    const response = await fetch(`${ENDPOINT}?page=${page}&size=9`);
+  getAll: async (page: number = 0, size: number = 9): Promise<PageResponse<Member>> => {
+    const response = await fetch(`${ENDPOINT}?page=${page}&size=${size}`);
     if (!response.ok) throw new Error('Failed to fetch members');
     return response.json();
   },
@@ -59,5 +59,28 @@ export const MemberService = {
       method: 'DELETE',
     });
     if (!response.ok) throw new Error('Failed to delete member');
+  },
+
+  // --- REGISTRATIONS ---
+  getActivities: async (id: number) => {
+    const res = await fetch(`${ENDPOINT}/${id}/activities`, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch member activities");
+    return res.json();
+  },
+
+  addActivity: async (id: number, activityId: number) => {
+    const res = await fetch(`${ENDPOINT}/${id}/activities/${activityId}`, {
+      method: "POST",
+    });
+    if (!res.ok) throw new Error("Failed to assign activity");
+    return res.json();
+  },
+
+  removeActivity: async (id: number, activityId: number) => {
+    const res = await fetch(`${ENDPOINT}/${id}/activities/${activityId}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) throw new Error("Failed to remove activity");
+    return res.json();
   }
 };
