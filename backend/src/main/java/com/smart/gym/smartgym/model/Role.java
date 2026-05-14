@@ -1,8 +1,7 @@
 package com.smart.gym.smartgym.model;
 
 public enum Role {
-    USER,
-    MEMBER,
-    MONITOR,
-    ADMIN
+    ROLE_MEMBER,
+    ROLE_MONITOR,
+    ROLE_ADMIN
 }

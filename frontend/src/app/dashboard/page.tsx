@@ -2,9 +2,9 @@ import Link from "next/link";
 import { MemberService } from "@/src/services/member.service";
 import { MonitorService } from "@/src/services/monitor.service";
 import { ActivityService } from "@/src/services/activity.service";
-import { RiBookLine, RiTeamLine } from "react-icons/ri";
+import { RiTeamLine } from "react-icons/ri";
 import { LuBriefcaseBusiness } from "react-icons/lu";
-import { TfiLayoutAccordionList, TfiLayoutAccordionMerged } from "react-icons/tfi";
+import { TfiLayoutAccordionMerged } from "react-icons/tfi";
 
 export default async function DashboardPage() {
   const [membersData, monitorsData, activitiesData] = await Promise.all([
