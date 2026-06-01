@@ -36,7 +36,7 @@ export default function LoginPage() {
         </p>
 
         {error && (
-          <div className="w-full bg-red-50 text-red-600 text-xs font-bold p-3 rounded-lg mb-6 border border-red-100 text-center">
+          <div className="w-full bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-xs font-bold p-3 rounded-lg mb-6 text-center">
             {error}
           </div>
         )}
@@ -50,7 +50,8 @@ export default function LoginPage() {
               type="email"
               name="email"
               required
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
+              disabled={isLoading}
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
               placeholder="you@example.com"
             />
           </div>
@@ -63,7 +64,8 @@ export default function LoginPage() {
               type="password"
               name="password"
               required
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
+              disabled={isLoading}
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
               placeholder="••••••••"
             />
           </div>
@@ -76,6 +78,13 @@ export default function LoginPage() {
             {isLoading ? 'Authenticating...' : 'Sign In'}
           </button>
         </form>
+
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-6">
+          Don't have an account?{' '}
+          <a href="/register" className="font-bold text-black dark:text-white hover:underline">
+            Create One
+          </a>
+        </p>
       </main>
     </div>
   );
