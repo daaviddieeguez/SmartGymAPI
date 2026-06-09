@@ -32,7 +32,13 @@ public class JwtService {
     }
 
     private String buildToken(UserDetails userDetails, Long expiration) {
+        String role = userDetails.getAuthorities().stream()
+                .map(org.springframework.security.core.GrantedAuthority::getAuthority)
+                .findFirst()
+                .orElse("");
+
         return Jwts.builder()
+                .claim("role", role)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration))

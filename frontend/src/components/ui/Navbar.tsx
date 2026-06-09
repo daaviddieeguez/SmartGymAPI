@@ -5,10 +5,17 @@ import Link from "next/link";
 import { MdClose } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
 
-export const Navbar = () => {
+interface NavbarProps {
+  role: string | null;
+}
+
+export const Navbar = ({ role }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const closeMenu = () => setIsMobileMenuOpen(false);
+
+  const showMembers = role === "ROLE_ADMIN" || role === "ROLE_MONITOR";
+  const showMonitors = role === "ROLE_ADMIN";
 
   return (
     <nav className="bg-black border-b border-zinc-800 sticky top-0 z-50 shadow-sm text-white">
@@ -25,8 +32,12 @@ export const Navbar = () => {
         <div className="hidden md:flex items-center gap-8">
           <div className="flex items-center gap-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">
             <Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
-            <Link href="/members" className="hover:text-white transition-colors">Members</Link>
-            <Link href="/monitors" className="hover:text-white transition-colors">Staff</Link>
+            {showMembers && (
+              <Link href="/members" className="hover:text-white transition-colors">Members</Link>
+            )}
+            {showMonitors && (
+              <Link href="/monitors" className="hover:text-white transition-colors">Staff</Link>
+            )}
             <Link href="/activities" className="hover:text-white transition-colors">Activities</Link>
           </div>
 
@@ -52,8 +63,12 @@ export const Navbar = () => {
         <div className="md:hidden bg-white border-t border-zinc-800 shadow-lg absolute w-full">
           <div className="flex flex-col px-6 py-4 space-y-4 text-sm font-bold text-gray-400 uppercase tracking-widest">
             <Link href="/dashboard" onClick={closeMenu}>Dashboard</Link>
-            <Link href="/members" onClick={closeMenu}>Members</Link>
-            <Link href="/monitors" onClick={closeMenu}>Staff</Link>
+            {showMembers && (
+              <Link href="/members" onClick={closeMenu}>Members</Link>
+            )}
+            {showMonitors && (
+              <Link href="/monitors" onClick={closeMenu}>Staff</Link>
+            )}
             <Link href="/activities" onClick={closeMenu}>Activities</Link>
             <hr className="border-zinc-800 my-2" />
             <Link href="/login" onClick={closeMenu} className="text-black">Log In</Link>

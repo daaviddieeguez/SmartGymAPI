@@ -9,7 +9,8 @@ INSERT INTO activity (id, name, calories, category, duration, is_premium, is_arc
                                                                               (7, 'Open Pool', 450, 'POOL', 60, false, false),
                                                                               (8, 'Hit Cardio', 500, 'CARDIO', 45, false, false),
                                                                               (9, 'Reformer Pilates', 350, 'BODYCARE', 50, true, false),
-                                                                              (10, 'Indoor Triathlon', 800, 'HIIT', 120, true, false);
+                                                                              (10, 'Indoor Triathlon', 800, 'HIIT', 120, true, false)
+ON CONFLICT (id) DO NOTHING;
 
 -- PEOPLE
 INSERT INTO person (id, name, dni, birthdate, address, locality, province, post_code, phone_number) VALUES
@@ -67,7 +68,8 @@ INSERT INTO person (id, name, dni, birthdate, address, locality, province, post_
                                                                                                         (52, 'Alice Howard', '13446499D', '1987-12-07', '63 Alonso Lane', 'Stockport', 'Greater Manchester', 'SK7 2AB', '072367696'),
                                                                                                         (53, 'Julia Ward', '90585882Z', '1986-09-14', '18 Ruiz Road', 'Trafford', 'Greater Manchester', 'M31 4LE', '077790890'),
                                                                                                         (54, 'Heather Torres', '66379329H', '2005-06-21', '40 Moreno Lane', 'Wigan', 'Greater Manchester', 'WN6 0PQ', '076684500'),
-                                                                                                        (55, 'Brian Peterson', '80027662J', '2000-09-25', '112 Moreno Lane', 'Manchester', 'Greater Manchester', 'M20 2ZW', '078952059');
+                                                                                                        (55, 'Brian Peterson', '80027662J', '2000-09-25', '112 Moreno Lane', 'Manchester', 'Greater Manchester', 'M20 2ZW', '078952059')
+ON CONFLICT (id) DO NOTHING;
 
 -- MEMBERS
 INSERT INTO member (id, is_premium, is_active, fee, registration_date, last_access_date) VALUES
@@ -120,7 +122,8 @@ INSERT INTO member (id, is_premium, is_active, fee, registration_date, last_acce
                                                                                              (47, true, true, 50.0, '2025-09-01', '2026-04-30'),
                                                                                              (48, false, true, 30.0, '2025-09-01', '2026-04-30'),
                                                                                              (49, true, false, 50.0, '2025-09-01', '2026-04-30'),
-                                                                                             (50, false, true, 30.0, '2025-09-01', '2026-04-30');
+                                                                                             (50, false, true, 30.0, '2025-09-01', '2026-04-30')
+ON CONFLICT (id) DO NOTHING;
 
 -- MONITORS
 INSERT INTO monitor (id, salary) VALUES
@@ -128,7 +131,8 @@ INSERT INTO monitor (id, salary) VALUES
                                      (52, 1800.0),
                                      (53, 1200.0),
                                      (54, 1800.0),
-                                     (55, 1500.0);
+                                     (55, 1500.0)
+ON CONFLICT (id) DO NOTHING;
 
 -- SEQUENCES
 ALTER SEQUENCE activity_id_seq RESTART WITH 11;

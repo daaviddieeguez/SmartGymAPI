@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "../components/ui/Navbar";
+import { getUserRole } from "../actions/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,11 +20,13 @@ export const metadata: Metadata = {
     "Manage your gym, track activities, and achieve your fitness goals.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const role = await getUserRole();
+
   return (
     <html
       lang="en"
@@ -31,7 +34,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-gray-50/50 text-gray-900">
         
-        <Navbar />
+        <Navbar role={role} />
 
         <main className="grow w-full">
           {children}

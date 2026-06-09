@@ -1,10 +1,18 @@
 import { SharedPersonTable } from "@/src/components/ui/SharedPersonTable";
 import { MemberService } from "@/src/services/member.service";
 import Link from "next/link";
+import { getUserRole } from "@/src/actions/auth";
+import { redirect } from "next/navigation";
 
 export default async function MembersPage(props: {
   searchParams: Promise<{ page?: string }>;
 }) {
+  const role = await getUserRole();
+  
+  if (role !== "ROLE_ADMIN" && role !== "ROLE_MONITOR") {
+    redirect("/dashboard");
+  }
+
   const searchParams = await props.searchParams;
   const currentPage = Number(searchParams.page) || 0;
 
@@ -26,7 +34,7 @@ export default async function MembersPage(props: {
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-        <SharedPersonTable items={members} baseRoute="members" />
+        <SharedPersonTable items={members} baseRoute="members" role={role} />
         <div className="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50">
           <span className="text-sm text-gray-500">
             Showing page {pageData.number + 1} of {pageData.totalPages}
