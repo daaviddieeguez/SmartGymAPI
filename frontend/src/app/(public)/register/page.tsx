@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { loginUser } from '@/src/actions/auth';
+import { registerUser } from '@/src/actions/auth';
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -15,12 +15,12 @@ export default function LoginPage() {
     setError(null);
 
     const formData = new FormData(e.currentTarget);
-    const result = await loginUser(formData);
+    const result = await registerUser(formData);
 
     if (result.success) {
       router.push('/dashboard');
     } else {
-      setError(result.error || 'Algo salió mal. Inténtalo de nuevo.');
+      setError(result.error || 'Something went wrong. Please try again.');
       setIsLoading(false);
     }
   };
@@ -32,16 +32,16 @@ export default function LoginPage() {
           Smart Gym
         </h1>
         <p className="text-sm tracking-widest text-gray-500 uppercase font-bold mb-8">
-          Member Access
+          Create Your Account
         </p>
 
         {error && (
-          <div className="w-full bg-red-50 text-red-600 text-xs font-bold p-3 rounded-lg mb-6 border border-red-100 text-center">
+          <div className="w-full bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-xs font-bold p-3 rounded-lg mb-6 text-center">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-5">
+        <form className="w-full flex flex-col gap-5" onSubmit={handleSubmit}>
           <div>
             <label className="block text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1.5">
               Email Address
@@ -50,7 +50,8 @@ export default function LoginPage() {
               type="email"
               name="email"
               required
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
+              disabled={isLoading}
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
               placeholder="you@example.com"
             />
           </div>
@@ -63,7 +64,8 @@ export default function LoginPage() {
               type="password"
               name="password"
               required
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
+              disabled={isLoading}
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
               placeholder="••••••••"
             />
           </div>
@@ -71,11 +73,18 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="mt-4 w-full bg-black hover:bg-zinc-800 text-white px-4 py-3 rounded-lg font-medium transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-black text-white rounded-lg font-bold text-sm hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Authenticating...' : 'Sign In'}
+            {isLoading ? 'Registering...' : 'Register'}
           </button>
         </form>
+
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-6">
+          Already have an account?{' '}
+          <a href="/login" className="font-bold text-black dark:text-white hover:underline">
+            Sign In
+          </a>
+        </p>
       </main>
     </div>
   );
