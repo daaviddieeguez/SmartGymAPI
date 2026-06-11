@@ -99,4 +99,13 @@ public class AuthService {
         });
         tokenRepository.saveAll(validUserTokens);
     }
+
+    public void logout(String jwt) {
+        var storedToken = tokenRepository.findByToken(jwt).orElse(null);
+        if (storedToken != null) {
+            storedToken.setExpired(true);
+            storedToken.setRevoked(true);
+            tokenRepository.save(storedToken);
+        }
+    }
 }

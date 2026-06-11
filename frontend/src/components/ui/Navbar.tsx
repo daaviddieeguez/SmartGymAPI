@@ -2,17 +2,26 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { MdClose } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { logoutUser } from "@/src/actions/auth";
 
 interface NavbarProps {
   role: string | null;
 }
 
 export const Navbar = ({ role }: NavbarProps) => {
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const closeMenu = () => setIsMobileMenuOpen(false);
+
+  const handleLogout = async () => {
+    await logoutUser();
+    router.push("/login");
+    router.refresh();
+  };
 
   const showMembers = role === "ROLE_ADMIN" || role === "ROLE_MONITOR";
   const showMonitors = role === "ROLE_ADMIN";
@@ -42,9 +51,18 @@ export const Navbar = ({ role }: NavbarProps) => {
           </div>
 
           <div className="flex items-center gap-5 border-l border-zinc-800 pl-6">
-            <Link href="/login" className="text-xs font-bold text-gray-400 hover:text-white transition-colors uppercase tracking-wider">
-              Log In
-            </Link>
+            {role ? (
+              <button
+                onClick={handleLogout}
+                className="text-xs font-bold text-gray-400 hover:text-white transition-colors uppercase tracking-wider"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link href="/login" className="text-xs font-bold text-gray-400 hover:text-white transition-colors uppercase tracking-wider">
+                Log In
+              </Link>
+            )}
             <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 shadow-inner hover:ring-2 hover:ring-white transition-all cursor-pointer"></div>
           </div>
         </div>
@@ -71,7 +89,19 @@ export const Navbar = ({ role }: NavbarProps) => {
             )}
             <Link href="/activities" onClick={closeMenu}>Activities</Link>
             <hr className="border-zinc-800 my-2" />
-            <Link href="/login" onClick={closeMenu} className="text-black">Log In</Link>
+            {role ? (
+              <button
+                onClick={() => {
+                  closeMenu();
+                  handleLogout();
+                }}
+                className="text-left text-red-600 hover:text-red-800 transition-colors font-bold text-sm uppercase tracking-widest"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link href="/login" onClick={closeMenu} className="text-black">Log In</Link>
+            )}
           </div>
         </div>
       )}
