@@ -1,15 +1,20 @@
 import { ActivityTable } from "@/src/components/ui/ActivityTable";
 import { ActivityService } from "@/src/services/activity.service";
 import Link from "next/link";
+import { getUserSession } from "@/src/actions/auth";
 
 export default async function ActivitiesPage(props: {
   searchParams: Promise<{ page?: string }>;
 }) {
+  const session = await getUserSession();
+  const role = session?.role || null;
   const searchParams = await props.searchParams;
   const currentPage = Number(searchParams.page) || 0;
 
   const pageData = await ActivityService.getAll(currentPage);
   const activities = pageData.content;
+
+  const showNewActivity = role === "ROLE_ADMIN" || role === "ROLE_MONITOR";
 
   return (
     <div className="p-6 w-full min-h-screen bg-gray-50/50">
@@ -17,16 +22,18 @@ export default async function ActivitiesPage(props: {
         <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
           Activities Management
         </h1>
-        <Link
-          href="/activities/new"
-          className="bg-black hover:bg-zinc-800 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-        >
-          + New Activity
-        </Link>
+        {showNewActivity && (
+          <Link
+            href="/activities/new"
+            className="bg-black hover:bg-zinc-800 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+          >
+            + New Activity
+          </Link>
+        )}
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-        <ActivityTable items={activities} />
+        <ActivityTable items={activities} role={role} />
         <div className="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50">
           <span className="text-sm text-gray-500">
             Showing page {pageData.number + 1} of {pageData.totalPages}

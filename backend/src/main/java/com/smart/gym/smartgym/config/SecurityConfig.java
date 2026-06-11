@@ -31,6 +31,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/activities/**").authenticated()
 
                         .requestMatchers("/api/monitors/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/members/*").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/members/*/activities").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/members/*/activities/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/members/*/activities/**").authenticated()
                         .requestMatchers("/api/members/**").hasAnyRole("MONITOR", "ADMIN")
 
                         .anyRequest().authenticated()

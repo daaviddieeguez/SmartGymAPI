@@ -39,12 +39,31 @@ export async function loginUser(formData: FormData) {
 export async function registerUser(formData: FormData) {
   const email = formData.get('email');
   const password = formData.get('password');
+  const dni = formData.get('dni');
+  const name = formData.get('name');
+  const birthdate = formData.get('birthdate');
+  const address = formData.get('address');
+  const locality = formData.get('locality');
+  const province = formData.get('province');
+  const postCode = formData.get('postCode');
+  const phoneNumber = formData.get('phoneNumber');
 
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({
+        email,
+        password,
+        dni,
+        name,
+        birthdate,
+        address,
+        locality,
+        province,
+        postCode,
+        phoneNumber
+      }),
     });
 
     if (!response.ok) {
@@ -73,4 +92,28 @@ export async function registerUser(formData: FormData) {
 export async function getToken() {
   const cookieStore = await cookies();
   return cookieStore.get('accessToken')?.value;
+}
+
+export async function getUserSession() {
+  const token = await getToken();
+  if (!token) return null;
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      Buffer.from(base64, 'base64')
+        .toString('binary')
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    const payload = JSON.parse(jsonPayload);
+    return {
+      role: (payload.role as string) || null,
+      userId: payload.userId ? Number(payload.userId) : null,
+      email: (payload.sub as string) || null,
+    };
+  } catch {
+    return null;
+  }
 }

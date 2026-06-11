@@ -32,12 +32,33 @@ public class JwtService {
     }
 
     private String buildToken(UserDetails userDetails, Long expiration) {
-        return Jwts.builder()
+        String role = userDetails.getAuthorities().stream()
+                .map(org.springframework.security.core.GrantedAuthority::getAuthority)
+                .findFirst()
+                .orElse("");
+
+        Long id = null;
+        if (userDetails instanceof com.smart.gym.smartgym.model.User) {
+            com.smart.gym.smartgym.model.User user = (com.smart.gym.smartgym.model.User) userDetails;
+            if (user.getPerson() != null) {
+                id = user.getPerson().getId();
+            } else {
+                id = user.getId();
+            }
+        }
+
+        var builder = Jwts.builder()
+                .claim("role", role)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey())
-                .compact();
+                .signWith(getSignInKey());
+
+        if (id != null) {
+            builder.claim("userId", id);
+        }
+
+        return builder.compact();
     }
 
     public String extractUsername(String token) {
