@@ -1,12 +1,13 @@
 import { ActivityTable } from "@/src/components/ui/ActivityTable";
 import { ActivityService } from "@/src/services/activity.service";
 import Link from "next/link";
-import { getUserRole } from "@/src/actions/auth";
+import { getUserSession } from "@/src/actions/auth";
 
 export default async function ActivitiesPage(props: {
   searchParams: Promise<{ page?: string }>;
 }) {
-  const role = await getUserRole();
+  const session = await getUserSession();
+  const role = session?.role || null;
   const searchParams = await props.searchParams;
   const currentPage = Number(searchParams.page) || 0;
 

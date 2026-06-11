@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "../components/ui/Navbar";
-import { getUserRole } from "../actions/auth";
+import { getUserSession } from "../actions/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +25,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const role = await getUserRole();
+  const session = await getUserSession();
+  const role = session?.role || null;
 
   return (
     <html

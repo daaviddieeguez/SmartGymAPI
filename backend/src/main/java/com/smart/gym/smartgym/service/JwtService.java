@@ -1,4 +1,4 @@
-package com.smart.gym.smartgym.service;
+zpackage com.smart.gym.smartgym.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -37,13 +37,23 @@ public class JwtService {
                 .findFirst()
                 .orElse("");
 
-        return Jwts.builder()
+        Long id = null;
+        if (userDetails instanceof com.smart.gym.smartgym.model.User) {
+            id = ((com.smart.gym.smartgym.model.User) userDetails).getId();
+        }
+
+        var builder = Jwts.builder()
                 .claim("role", role)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey())
-                .compact();
+                .signWith(getSignInKey());
+
+        if (id != null) {
+            builder.claim("userId", id);
+        }
+
+        return builder.compact();
     }
 
     public String extractUsername(String token) {

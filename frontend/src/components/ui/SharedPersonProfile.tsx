@@ -7,9 +7,11 @@ interface SharedPersonProfileProps {
   baseRoute: "members" | "monitors";
   currentActivities: Activity[];
   allActivities: Activity[];
+  email?: string | null;
+  role?: string | null;
 }
 
-export const SharedPersonProfile = ({ person, baseRoute, currentActivities, allActivities }: SharedPersonProfileProps) => {
+export const SharedPersonProfile = ({ person, baseRoute, currentActivities, allActivities, email, role }: SharedPersonProfileProps) => {
   const isMember = baseRoute === "members";
   const isMonitor = baseRoute === "monitors";
 
@@ -27,20 +29,22 @@ export const SharedPersonProfile = ({ person, baseRoute, currentActivities, allA
           </h1>
           <p className="text-gray-500 font-medium mt-1">Viewing detailed profile information.</p>
         </div>
-        <div className="flex gap-3">
-          <Link
-            href={`/${baseRoute}`}
-            className="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 px-5 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm"
-          >
-            BACK TO LIST
-          </Link>
-          <Link
-            href={`/${baseRoute}/${person.id}/edit`}
-            className="bg-black hover:bg-zinc-800 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm"
-          >
-            EDIT RECORD
-          </Link>
-        </div>
+        {role !== "ROLE_MEMBER" && (
+          <div className="flex gap-3">
+            <Link
+              href={`/${baseRoute}`}
+              className="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 px-5 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm"
+            >
+              BACK TO LIST
+            </Link>
+            <Link
+              href={`/${baseRoute}/${person.id}/edit`}
+              className="bg-black hover:bg-zinc-800 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm"
+            >
+              EDIT RECORD
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* MAIN PROFILE CARD */}
@@ -97,6 +101,12 @@ export const SharedPersonProfile = ({ person, baseRoute, currentActivities, allA
                 <span className="block text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-1">Birthdate</span>
                 <span className="text-sm font-medium text-gray-800">{person.birthdate}</span>
               </div>
+              {email && (
+                <div className="col-span-2">
+                  <span className="block text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-1">Email Address</span>
+                  <span className="text-sm font-medium text-gray-800">{email}</span>
+                </div>
+              )}
             </div>
           </div>
 

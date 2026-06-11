@@ -75,7 +75,7 @@ export async function getToken() {
   return cookieStore.get('accessToken')?.value;
 }
 
-export async function getUserRole(): Promise<string | null> {
+export async function getUserSession() {
   const token = await getToken();
   if (!token) return null;
   try {
@@ -89,7 +89,11 @@ export async function getUserRole(): Promise<string | null> {
         .join('')
     );
     const payload = JSON.parse(jsonPayload);
-    return payload.role || null;
+    return {
+      role: (payload.role as string) || null,
+      userId: payload.userId ? Number(payload.userId) : null,
+      email: (payload.sub as string) || null,
+    };
   } catch {
     return null;
   }

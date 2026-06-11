@@ -5,11 +5,18 @@ import { ActivityService } from "@/src/services/activity.service";
 import { RiTeamLine } from "react-icons/ri";
 import { LuBriefcaseBusiness } from "react-icons/lu";
 import { TfiLayoutAccordionMerged } from "react-icons/tfi";
-import { getUserRole } from "../../actions/auth";
+import { getUserSession } from "../../actions/auth";
 import { Member, Monitor, Activity, PageResponse } from "@/src/types";
+import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
-  const role = await getUserRole();
+  const session = await getUserSession();
+
+  if (session?.role === "ROLE_MEMBER") {
+    redirect(`/members/${session.userId}`);
+  }
+
+  const role = session?.role || null;
 
   let membersData: PageResponse<Member> = { content: [], totalPages: 0, totalElements: 0, size: 0, number: 0 };
   let monitorsData: PageResponse<Monitor> = { content: [], totalPages: 0, totalElements: 0, size: 0, number: 0 };

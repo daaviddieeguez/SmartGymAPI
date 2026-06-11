@@ -1,13 +1,14 @@
 import { SharedPersonTable } from "@/src/components/ui/SharedPersonTable";
 import { MemberService } from "@/src/services/member.service";
 import Link from "next/link";
-import { getUserRole } from "@/src/actions/auth";
+import { getUserSession } from "@/src/actions/auth";
 import { redirect } from "next/navigation";
 
 export default async function MembersPage(props: {
   searchParams: Promise<{ page?: string }>;
 }) {
-  const role = await getUserRole();
+  const session = await getUserSession();
+  const role = session?.role || null;
   
   if (role !== "ROLE_ADMIN" && role !== "ROLE_MONITOR") {
     redirect("/dashboard");
