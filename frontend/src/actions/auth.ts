@@ -39,12 +39,31 @@ export async function loginUser(formData: FormData) {
 export async function registerUser(formData: FormData) {
   const email = formData.get('email');
   const password = formData.get('password');
+  const dni = formData.get('dni');
+  const name = formData.get('name');
+  const birthdate = formData.get('birthdate');
+  const address = formData.get('address');
+  const locality = formData.get('locality');
+  const province = formData.get('province');
+  const postCode = formData.get('postCode');
+  const phoneNumber = formData.get('phoneNumber');
 
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({
+        email,
+        password,
+        dni,
+        name,
+        birthdate,
+        address,
+        locality,
+        province,
+        postCode,
+        phoneNumber
+      }),
     });
 
     if (!response.ok) {

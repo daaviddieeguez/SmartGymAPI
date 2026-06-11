@@ -1,4 +1,4 @@
-zpackage com.smart.gym.smartgym.service;
+package com.smart.gym.smartgym.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -39,7 +39,12 @@ public class JwtService {
 
         Long id = null;
         if (userDetails instanceof com.smart.gym.smartgym.model.User) {
-            id = ((com.smart.gym.smartgym.model.User) userDetails).getId();
+            com.smart.gym.smartgym.model.User user = (com.smart.gym.smartgym.model.User) userDetails;
+            if (user.getPerson() != null) {
+                id = user.getPerson().getId();
+            } else {
+                id = user.getId();
+            }
         }
 
         var builder = Jwts.builder()

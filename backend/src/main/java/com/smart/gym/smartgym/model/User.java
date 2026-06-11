@@ -31,6 +31,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "person_id")
+    private Person person;
+
     @Override
     @NonNull
     public Collection<? extends GrantedAuthority> getAuthorities() {

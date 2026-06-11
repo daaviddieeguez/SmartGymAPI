@@ -3,6 +3,7 @@ package com.smart.gym.smartgym.service;
 import com.smart.gym.smartgym.dto.AuthResponseDTO;
 import com.smart.gym.smartgym.dto.LoginRequestDTO;
 import com.smart.gym.smartgym.dto.RegisterRequestDTO;
+import com.smart.gym.smartgym.model.Member;
 import com.smart.gym.smartgym.model.Role;
 import com.smart.gym.smartgym.model.Token;
 import com.smart.gym.smartgym.model.TokenType;
@@ -14,6 +15,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +32,26 @@ public class AuthService {
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
         user.setRole(Role.ROLE_MEMBER);
+
+        Member member = new Member();
+        member.setDni(request.getDni());
+        member.setName(request.getName());
+        member.setBirthdate(request.getBirthdate());
+        member.setAddress(request.getAddress());
+        member.setLocality(request.getLocality());
+        member.setProvince(request.getProvince());
+        member.setPostCode(request.getPostCode());
+        member.setPhoneNumber(request.getPhoneNumber());
+
+        // Default member attributes
+        member.setActive(true);
+        member.setPremium(false);
+        member.setFee(30.0);
+        member.setRegistrationDate(LocalDate.now());
+        member.setLastAccessDate(LocalDate.now());
+
+        user.setPerson(member);
 
         userRepository.save(user);
 

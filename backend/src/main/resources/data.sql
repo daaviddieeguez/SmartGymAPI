@@ -134,6 +134,67 @@ INSERT INTO monitor (id, salary) VALUES
                                      (55, 1500.0)
 ON CONFLICT (id) DO NOTHING;
 
+-- USERS
+INSERT INTO users (id, email, password, role, person_id) VALUES
+(1, 'sarah.miller@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 1),
+(2, 'james.thompson@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 2),
+(3, 'emily.davis@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 3),
+(4, 'michael.brown@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 4),
+(5, 'jessica.wilson@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 5),
+(6, 'robert.taylor@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 6),
+(7, 'linda.moore@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 7),
+(8, 'william.anderson@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 8),
+(9, 'david.thomas@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 9),
+(10, 'barbara.jackson@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 10),
+(11, 'richard.white@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 11),
+(12, 'susan.harris@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 12),
+(13, 'margaret.martin@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 13),
+(14, 'dorothy.garcia@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 14),
+(15, 'chris.robinson@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 15),
+(16, 'mary.clark@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 16),
+(17, 'charles.lewis@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 17),
+(18, 'patricia.walker@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 18),
+(19, 'matthew.hall@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 19),
+(20, 'elizabeth.young@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 20),
+(21, 'jennifer.king@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 21),
+(22, 'lisa.wright@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 22),
+(23, 'karen.lopez@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 23),
+(24, 'george.hill@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 24),
+(25, 'joseph.scott@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 25),
+(26, 'nancy.green@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 26),
+(27, 'edward.adams@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 27),
+(28, 'betty.baker@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 28),
+(29, 'sandra.nelson@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 29),
+(30, 'mark.carter@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 30),
+(31, 'ashley.mitchell@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 31),
+(32, 'kimberly.roberts@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 32),
+(33, 'donna.phillips@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 33),
+(34, 'kenneth.campbell@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 34),
+(35, 'michelle.parker@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 35),
+(36, 'carol.evans@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 36),
+(37, 'steven.edwards@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 37),
+(38, 'amanda.collins@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 38),
+(39, 'melissa.stewart@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 39),
+(40, 'deborah.morris@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 40),
+(41, 'stephanie.rogers@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 41),
+(42, 'jason.reed@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 42),
+(43, 'jeffrey.cook@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 43),
+(44, 'rebecca.morgan@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 44),
+(45, 'gary.bell@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 45),
+(46, 'shirley.murphy@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 46),
+(47, 'timothy.bailey@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 47),
+(48, 'cynthia.rivera@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 48),
+(49, 'frank.cooper@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 49),
+(50, 'scott.richardson@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MEMBER', 50),
+(51, 'kevin.cox@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MONITOR', 51),
+(52, 'alice.howard@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MONITOR', 52),
+(53, 'julia.ward@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MONITOR', 53),
+(54, 'heather.torres@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MONITOR', 54),
+(55, 'brian.peterson@smartgym.com', '$2a$10$2y6AOPk43L1j1j6uOskHdeFf1Yd4sN0W6rZ.HeeA84/vH2.t/Fie2', 'ROLE_MONITOR', 55),
+(56, 'admin@smartgym.com', '$2a$10$8.K9qX1S8n4/U65k7E/cKO4K.nE7412hT9g86pX1/cZl3cDeKzpyi', 'ROLE_ADMIN', NULL)
+ON CONFLICT (id) DO NOTHING;
+
 -- SEQUENCES
 ALTER SEQUENCE activity_id_seq RESTART WITH 11;
 ALTER SEQUENCE person_id_seq RESTART WITH 56;
+ALTER SEQUENCE users_id_seq RESTART WITH 57;
