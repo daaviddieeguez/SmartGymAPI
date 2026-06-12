@@ -30,6 +30,16 @@ export async function loginUser(formData: FormData) {
       maxAge: 60 * 60 * 24
     });
 
+    cookieStore.set({
+      name: 'refreshToken',
+      value: data.refreshToken,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7
+    });
+
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
@@ -81,6 +91,16 @@ export async function registerUser(formData: FormData) {
       sameSite: 'lax',
       path: '/',
       maxAge: 60 * 60 * 24
+    });
+
+    cookieStore.set({
+      name: 'refreshToken',
+      value: data.refreshToken,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7
     });
 
     return { success: true };
@@ -136,6 +156,59 @@ export async function logoutUser() {
 
   const cookieStore = await cookies();
   cookieStore.delete('accessToken');
+  cookieStore.delete('refreshToken');
 
   return { success: true };
+}
+
+export async function refreshAccessToken() {
+  const cookieStore = await cookies();
+  const refreshToken = cookieStore.get('refreshToken')?.value;
+
+  if (!refreshToken) {
+    return false;
+  }
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    });
+
+    if (!response.ok) {
+      cookieStore.delete('accessToken');
+      cookieStore.delete('refreshToken');
+      return false;
+    }
+
+    const data = await response.json();
+
+    cookieStore.set({
+      name: 'accessToken',
+      value: data.accessToken,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24
+    });
+
+    cookieStore.set({
+      name: 'refreshToken',
+      value: data.refreshToken,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Failed to refresh access token:', error);
+    cookieStore.delete('accessToken');
+    cookieStore.delete('refreshToken');
+    return false;
+  }
 }
