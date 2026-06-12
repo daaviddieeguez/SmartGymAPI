@@ -5,11 +5,13 @@ import { DeleteButton } from "./DeleteButton";
 interface SharedPersonTableProps {
   items: Person[];
   baseRoute: "members" | "monitors";
+  role?: string | null;
 }
 
 export const SharedPersonTable = ({
   items,
   baseRoute,
+  role,
 }: SharedPersonTableProps) => {
   if (items.length === 0) {
     return (
@@ -23,6 +25,9 @@ export const SharedPersonTable = ({
   }
 
   const isMemberRoute = baseRoute === "members";
+  const showActions = isMemberRoute
+    ? (role === "ROLE_ADMIN" || role === "ROLE_MONITOR")
+    : (role === "ROLE_ADMIN");
 
   return (
     <div className="w-full overflow-x-auto">
@@ -33,7 +38,7 @@ export const SharedPersonTable = ({
             <th className="px-6 py-4">Identification (DNI)</th>
             <th className="px-6 py-4">Locality</th>
             {isMemberRoute && <th className="px-6 py-4 text-center">Membership Status</th>}
-            <th className="px-6 py-4 text-right">Actions</th>
+            {showActions && <th className="px-6 py-4 text-right">Actions</th>}
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-50">
@@ -71,17 +76,19 @@ export const SharedPersonTable = ({
                   </td>
                 )}
                 
-                <td className="px-6 py-5 text-right">
-                  <div className="flex justify-end items-center gap-4">
-                    <Link
-                      href={`/${baseRoute}/${person.id}/edit`}
-                      className="text-black hover:text-gray-500 text-xs font-bold underline underline-offset-2 transition-colors"
-                    >
-                      EDIT
-                    </Link>
-                    <DeleteButton id={person.id} route={baseRoute} /> 
-                  </div>
-                </td>
+                {showActions && (
+                  <td className="px-6 py-5 text-right">
+                    <div className="flex justify-end items-center gap-4">
+                      <Link
+                        href={`/${baseRoute}/${person.id}/edit`}
+                        className="text-black hover:text-gray-500 text-xs font-bold underline underline-offset-2 transition-colors"
+                      >
+                        EDIT
+                      </Link>
+                      <DeleteButton id={person.id} route={baseRoute} /> 
+                    </div>
+                  </td>
+                )}
               </tr>
             );
           })}

@@ -4,9 +4,10 @@ import { DeleteButton } from "./DeleteButton";
 
 interface ActivityTableProps {
   items: Activity[];
+  role: string | null;
 }
 
-export const ActivityTable = ({ items }: ActivityTableProps) => {
+export const ActivityTable = ({ items, role }: ActivityTableProps) => {
   if (items.length === 0) {
     return (
       <div className="p-20 text-center text-gray-400">
@@ -17,6 +18,8 @@ export const ActivityTable = ({ items }: ActivityTableProps) => {
       </div>
     );
   }
+
+  const showActions = role === "ROLE_ADMIN" || role === "ROLE_MONITOR";
 
   return (
     <div className="w-full overflow-x-auto">
@@ -29,7 +32,7 @@ export const ActivityTable = ({ items }: ActivityTableProps) => {
             <th className="px-6 py-4 text-center">Calories</th>
             <th className="px-6 py-4 text-center">Access</th>
             <th className="px-6 py-4 text-right">Score</th>
-            <th className="px-6 py-4 text-right">Actions</th>
+            {showActions && <th className="px-6 py-4 text-right">Actions</th>}
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-50">
@@ -73,17 +76,19 @@ export const ActivityTable = ({ items }: ActivityTableProps) => {
                   {activity.averageScore.toFixed(1)}
                 </span>
               </td>
-              <td className="px-6 py-5 text-right">
-                <div className="flex justify-end items-center gap-4  transition-opacity">
-                  <Link
-                    href={`/activities/${activity.id}/edit`}
-                    className="text-black hover:text-gray-500 text-xs font-bold underline underline-offset-2 transition-colors"
-                  >
-                    EDIT
-                  </Link>
-                  <DeleteButton id={activity.id} route="activities" />
-                </div>
-              </td>
+              {showActions && (
+                <td className="px-6 py-5 text-right">
+                  <div className="flex justify-end items-center gap-4  transition-opacity">
+                    <Link
+                      href={`/activities/${activity.id}/edit`}
+                      className="text-black hover:text-gray-500 text-xs font-bold underline underline-offset-2 transition-colors"
+                    >
+                      EDIT
+                    </Link>
+                    <DeleteButton id={activity.id} route="activities" />
+                  </div>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

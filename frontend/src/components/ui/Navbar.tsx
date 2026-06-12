@@ -2,13 +2,29 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { MdClose } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { logoutUser } from "@/src/actions/auth";
 
-export const Navbar = () => {
+interface NavbarProps {
+  role: string | null;
+}
+
+export const Navbar = ({ role }: NavbarProps) => {
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const closeMenu = () => setIsMobileMenuOpen(false);
+
+  const handleLogout = async () => {
+    await logoutUser();
+    router.push("/login");
+    router.refresh();
+  };
+
+  const showMembers = role === "ROLE_ADMIN" || role === "ROLE_MONITOR";
+  const showMonitors = role === "ROLE_ADMIN";
 
   return (
     <nav className="bg-black border-b border-zinc-800 sticky top-0 z-50 shadow-sm text-white">
@@ -25,15 +41,28 @@ export const Navbar = () => {
         <div className="hidden md:flex items-center gap-8">
           <div className="flex items-center gap-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">
             <Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
-            <Link href="/members" className="hover:text-white transition-colors">Members</Link>
-            <Link href="/monitors" className="hover:text-white transition-colors">Staff</Link>
+            {showMembers && (
+              <Link href="/members" className="hover:text-white transition-colors">Members</Link>
+            )}
+            {showMonitors && (
+              <Link href="/monitors" className="hover:text-white transition-colors">Staff</Link>
+            )}
             <Link href="/activities" className="hover:text-white transition-colors">Activities</Link>
           </div>
 
           <div className="flex items-center gap-5 border-l border-zinc-800 pl-6">
-            <Link href="/login" className="text-xs font-bold text-gray-400 hover:text-white transition-colors uppercase tracking-wider">
-              Log In
-            </Link>
+            {role ? (
+              <button
+                onClick={handleLogout}
+                className="text-xs font-bold text-gray-400 hover:text-white transition-colors uppercase tracking-wider"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link href="/login" className="text-xs font-bold text-gray-400 hover:text-white transition-colors uppercase tracking-wider">
+                Log In
+              </Link>
+            )}
             <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 shadow-inner hover:ring-2 hover:ring-white transition-all cursor-pointer"></div>
           </div>
         </div>
@@ -52,11 +81,27 @@ export const Navbar = () => {
         <div className="md:hidden bg-white border-t border-zinc-800 shadow-lg absolute w-full">
           <div className="flex flex-col px-6 py-4 space-y-4 text-sm font-bold text-gray-400 uppercase tracking-widest">
             <Link href="/dashboard" onClick={closeMenu}>Dashboard</Link>
-            <Link href="/members" onClick={closeMenu}>Members</Link>
-            <Link href="/monitors" onClick={closeMenu}>Staff</Link>
+            {showMembers && (
+              <Link href="/members" onClick={closeMenu}>Members</Link>
+            )}
+            {showMonitors && (
+              <Link href="/monitors" onClick={closeMenu}>Staff</Link>
+            )}
             <Link href="/activities" onClick={closeMenu}>Activities</Link>
             <hr className="border-zinc-800 my-2" />
-            <Link href="/login" onClick={closeMenu} className="text-black">Log In</Link>
+            {role ? (
+              <button
+                onClick={() => {
+                  closeMenu();
+                  handleLogout();
+                }}
+                className="text-left text-red-600 hover:text-red-800 transition-colors font-bold text-sm uppercase tracking-widest"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link href="/login" onClick={closeMenu} className="text-black">Log In</Link>
+            )}
           </div>
         </div>
       )}

@@ -1,10 +1,19 @@
 import { SharedPersonTable } from "@/src/components/ui/SharedPersonTable";
 import { MonitorService } from "@/src/services/monitor.service";
 import Link from "next/link";
+import { getUserSession } from "@/src/actions/auth";
+import { redirect } from "next/navigation";
 
 export default async function MonitorsPage(props: {
   searchParams: Promise<{ page?: string }>;
 }) {
+  const session = await getUserSession();
+  const role = session?.role || null;
+  
+  if (role !== "ROLE_ADMIN") {
+    redirect("/dashboard");
+  }
+
   const searchParams = await props.searchParams;
   const currentPage = Number(searchParams.page) || 0;
 
@@ -26,7 +35,7 @@ export default async function MonitorsPage(props: {
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-        <SharedPersonTable items={monitors} baseRoute="monitors" />
+        <SharedPersonTable items={monitors} baseRoute="monitors" role={role} />
         <div className="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50">
           <span className="text-sm text-gray-500">
             Showing page {pageData.number + 1} of {pageData.totalPages}
