@@ -48,7 +48,7 @@ export default function RegisterPage() {
               Account Credentials
             </h2>
           </div>
-          
+
           <div>
             <label className="block text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1.5">
               Email Address
@@ -58,7 +58,7 @@ export default function RegisterPage() {
               name="email"
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 dark:text-white focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
               placeholder="you@example.com"
             />
           </div>
@@ -72,7 +72,7 @@ export default function RegisterPage() {
               name="password"
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 dark:text-white focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
               placeholder="••••••••"
             />
           </div>
@@ -93,7 +93,7 @@ export default function RegisterPage() {
               name="name"
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 dark:text-white focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
               placeholder="John Doe"
             />
           </div>
@@ -107,7 +107,7 @@ export default function RegisterPage() {
               name="dni"
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 dark:text-white focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
               placeholder="12345678A"
             />
           </div>
@@ -121,7 +121,7 @@ export default function RegisterPage() {
               name="birthdate"
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 dark:text-white focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
             />
           </div>
 
@@ -134,7 +134,7 @@ export default function RegisterPage() {
               name="phoneNumber"
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 dark:text-white focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
               placeholder="600123456"
             />
           </div>
@@ -155,7 +155,7 @@ export default function RegisterPage() {
               name="address"
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 dark:text-white focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
               placeholder="123 Main St"
             />
           </div>
@@ -169,7 +169,7 @@ export default function RegisterPage() {
               name="locality"
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 dark:text-white focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
               placeholder="Manchester"
             />
           </div>
@@ -183,7 +183,7 @@ export default function RegisterPage() {
               name="province"
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 dark:text-white focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
               placeholder="Greater Manchester"
             />
           </div>
@@ -197,7 +197,7 @@ export default function RegisterPage() {
               name="postCode"
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 dark:text-white focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 dark:border-zinc-800 rounded-lg text-sm text-gray-900 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all disabled:opacity-50"
               placeholder="M1 2AB"
             />
           </div>
@@ -215,7 +215,7 @@ export default function RegisterPage() {
 
         <p className="text-sm text-gray-600 dark:text-gray-400 mt-6">
           Already have an account?{' '}
-          <a href="/login" className="font-bold text-black dark:text-white hover:underline">
+          <a href="/login" className="font-bold text-black hover:underline">
             Sign In
           </a>
         </p>

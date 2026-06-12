@@ -117,3 +117,25 @@ export async function getUserSession() {
     return null;
   }
 }
+
+export async function logoutUser() {
+  const token = await getToken();
+
+  if (token) {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/logout`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+    } catch (error) {
+      console.error('Failed to invalidate token on backend:', error);
+    }
+  }
+
+  const cookieStore = await cookies();
+  cookieStore.delete('accessToken');
+
+  return { success: true };
+}
