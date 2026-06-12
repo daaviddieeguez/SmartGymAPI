@@ -1,14 +1,12 @@
 import { Activity, ActivityRequest, PageResponse } from "../types";
-import { API_BASE_URL, getAuthHeaders } from "./api";
+import { API_BASE_URL, apiFetch } from "./api";
 
 const ENDPOINT = `${API_BASE_URL}/activities`;
 
 export const ActivityService = {
   // GET: Fetch all activities
   getAll: async (page: number = 0, size: number = 9): Promise<PageResponse<Activity>> => {
-      const response = await fetch(`${ENDPOINT}?page=${page}&size=${size}`, {
-        headers: await getAuthHeaders(),
-      });
+      const response = await apiFetch(`${ENDPOINT}?page=${page}&size=${size}`);
       if (!response.ok) throw new Error("Failed to fetch activities");
       return response.json();
     },
@@ -16,18 +14,15 @@ export const ActivityService = {
 
   // GET: Fetch a single activity by ID
   getById: async (id: number): Promise<Activity> => {
-    const response = await fetch(`${ENDPOINT}/${id}`, {
-      headers: await getAuthHeaders(),
-    });
+    const response = await apiFetch(`${ENDPOINT}/${id}`);
     if (!response.ok) throw new Error(`Failed to fetch activity with id ${id}`);
     return response.json();
   },
 
   // PUT: Send the updated data to the server
   update: async (id: number, activity: ActivityRequest) => {
-    const response = await fetch(`${ENDPOINT}/${id}`, {
+    const response = await apiFetch(`${ENDPOINT}/${id}`, {
       method: "PUT",
-      headers: await getAuthHeaders(),
       body: JSON.stringify(activity),
     });
 
@@ -41,9 +36,8 @@ export const ActivityService = {
 
   // POST: Create a new activity
   create: async (activity: Omit<Activity, "id">): Promise<Activity> => {
-    const response = await fetch(ENDPOINT, {
+    const response = await apiFetch(ENDPOINT, {
       method: "POST",
-      headers: await getAuthHeaders(),
       body: JSON.stringify(activity),
     });
     if (!response.ok) throw new Error("Failed to create activity");
@@ -52,26 +46,22 @@ export const ActivityService = {
 
   // DELETE: Remove an activity
   delete: async (id: number): Promise<void> => {
-    const response = await fetch(`${ENDPOINT}/${id}`, {
+    const response = await apiFetch(`${ENDPOINT}/${id}`, {
       method: "DELETE",
-      headers: await getAuthHeaders(),
     });
     if (!response.ok) throw new Error("Failed to delete activity");
   },
 
   getMembers: async (id: number) => {
-    const response = await fetch(`${ENDPOINT}/${id}/members`, {
-      headers: await getAuthHeaders(),
-    });
+    const response = await apiFetch(`${ENDPOINT}/${id}/members`);
     if (!response.ok) throw new Error("Failed to fetch enrolled members");
     return response.json();
   },
 
   // --- VOTING ---
   addVote: async (id: number, score: number) => {
-    const response = await fetch(`${ENDPOINT}/${id}/votes/${score}`, {
+    const response = await apiFetch(`${ENDPOINT}/${id}/votes/${score}`, {
       method: "POST",
-      headers: await getAuthHeaders(),
     });
     
     if (!response.ok) {

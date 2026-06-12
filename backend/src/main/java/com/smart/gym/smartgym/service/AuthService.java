@@ -108,4 +108,20 @@ public class AuthService {
             tokenRepository.save(storedToken);
         }
     }
+
+    public AuthResponseDTO refresh(String refreshToken) {
+        final String userEmail = jwtService.extractUsername(refreshToken);
+        if (userEmail != null) {
+            var user = userRepository.findByEmail(userEmail)
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+            if (jwtService.isTokenValid(refreshToken, user)) {
+                var accessToken = jwtService.generateToken(user);
+                var newRefreshToken = jwtService.generateRefreshToken(user);
+                revokeAllUserTokens(user);
+                saveUserToken(user, accessToken);
+                return new AuthResponseDTO(accessToken, newRefreshToken);
+            }
+        }
+        throw new IllegalArgumentException("Invalid refresh token");
+    }
 }
